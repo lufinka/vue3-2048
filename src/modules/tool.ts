@@ -9,23 +9,6 @@ export const pointSort = (property: 'x' | 'y') => (firstRocks: rock, secondRocks
 
 export const isMobile = () => window.navigator.userAgent.match(/Mobile/)
 
-export const cssTransition = (e: rock) => {
-  if (isMobile()) {
-    return {
-      zIndex: e ? e.num : 0,
-      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-      transform: `translate(${(e ? e.x : 0) * 23.5}vw, ${(e ? e.y : 0) * 23.5}vw)`,
-    }
-  }
-  else {
-    return {
-      zIndex: e ? e.num : 0,
-      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-      transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
-    }
-  }
-}
-
 // 生成2/4数字(4出现的概率为10%)
 export const random24 = () => Math.random() > 0.9 ? 4 : 2
 // 生成0/1/2/3数字做为坐标
@@ -80,18 +63,18 @@ export const handleDirect = (direct: 'right' | 'left' | 'up' | 'down'): handleDi
  * @param y
  * @returns {undefined|T|T}
  */
-export const getRockByPoint = ({ x, y }: { x: number; y: number }, rocks: Array<rock>) => rocks.filter(rock => rock).find(rock => rock.x === x && rock.y === y)
+export const getRockByPoint = ({ x, y }: { x: number; y: number }, rocks: Array<rock | null>) => rocks.filter(rock => rock).find(rock => rock.x === x && rock.y === y)
 
 /**
  * 罗盘是否已经填充满了
  */
-export const isFull = (rocks: Array<rock>) => rocks.filter(e => e).length > 15
+export const isFull = (rocks: Array<rock | null>) => rocks?.filter(e => e).length > 15
 
 /**
  * 是否游戏失败
  * return true失败，反之没有结束
  */
-export const isGameOver = (rocks: Array<rock>) => {
+export const isGameOver = (rocks: Array<rock | null>) => {
   const result = isFull(rocks) && rocks
     .filter(e => e && (e.x !== 3 || e.y !== 3))
     .find((e) => {
@@ -107,7 +90,7 @@ export const isGameOver = (rocks: Array<rock>) => {
  * 游戏是否过关
  * return true过关，反之未过关
  */
-export const isSuccess = (rocks: Array<rock>) => {
+export const isSuccess = (rocks: Array<rock | null>) => {
   const result = rocks.find((e) => {
     return e && e.num === 8192
   })

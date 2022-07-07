@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { cssTransition, delay, getRockByPoint, handleDirect, isFull, isGameOver, isSuccess, random0123, random24 } from '~/modules/tool'
+import { delay, getRockByPoint, handleDirect, isFull, isGameOver, isMobile, isSuccess, random0123, random24 } from '~/modules/tool'
 import type { rock } from '~/types'
 
-let score = ref(0)
-let rocks: rock[] = ref([])
+const score = ref(0)
+let rocks = reactive<Array<rock | null>>([])
 enum color {
   '#eee4da' = 2,
   '#ede0c8' = 4,
@@ -72,14 +72,32 @@ onMounted(() => {
   })
 })
 function init() {
-  score = 0
+  score.value = 0
   initRocks()
 }
+
 function initRocks() {
   rocks = Array(16).fill(null)
   add()
   add()
   add()
+}
+
+function cssTransition(e: rock | null) {
+  if (isMobile()) {
+    return {
+      zIndex: e ? e.num : 0,
+      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
+      transform: `translate(${(e ? e.x : 0) * 23.5}vw, ${(e ? e.y : 0) * 23.5}vw)`,
+    }
+  }
+  else {
+    return {
+      zIndex: e ? e.num : 0,
+      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
+      transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
+    }
+  }
 }
 
 function add() {
@@ -98,7 +116,7 @@ function add() {
 }
 
 function turn(direct: 'right' | 'left' | 'up' | 'down') {
-  rocks.forEach((e: rock) => {
+  rocks.forEach((e) => {
     if (e) {
       e.canCalc = true
       e.isNew = false
@@ -164,7 +182,7 @@ function calcAxis({ e, direct }: { e: rock; direct: 'right' | 'left' | 'up' | 'd
       handleDirect(direct).handleMove(e)
       rocks.splice(getIndex(e.id), 1, null)
       next.num *= 2
-      score += next.num
+      score.value += next.num
       next.canCalc = false
       next.color = color[next.num]
       mergeNumericBlockAddStyle(next)
