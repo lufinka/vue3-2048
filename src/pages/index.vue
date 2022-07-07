@@ -13,6 +13,7 @@ const { t } = useI18n()
 
 <template>
   <div>
+    <games />
     <div text-4xl>
       <div i-carbon-campsite inline-block />
     </div>
