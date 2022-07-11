@@ -19,6 +19,7 @@ enum color {
   '#280b21' = 4096,
   '#281d04' = 8192,
 }
+
 const directX = 30
 
 onMounted(() => {
