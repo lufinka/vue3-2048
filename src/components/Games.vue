@@ -2,8 +2,8 @@
 import { delay, getRockByPoint, handleDirect, isFull, isGameOver, isMobile, isSuccess, random0123, random24 } from '~/modules/tool'
 import type { rock } from '~/types'
 
-const score = ref(0)
-const rocks = ref<Array<rock | null>>([])
+const score = useStorage('score', ref(0))
+const rocks = useStorage('2048', [] as Array<rock | null>)
 enum color {
   '#eee4da' = 2,
   '#ede0c8' = 4,
@@ -23,7 +23,7 @@ enum color {
 const directX = 30
 
 onMounted(() => {
-  init()
+  init(false)
   document.addEventListener('keydown', (e) => {
     switch (e.key.toLocaleUpperCase()) {
       case 'ARROWRIGHT':
@@ -72,16 +72,15 @@ onMounted(() => {
     })
   })
 })
-function init() {
-  score.value = 0
-  initRocks()
-}
-
-function initRocks() {
-  rocks.value = Array(16).fill(null)
-  add()
-  add()
-  add()
+function init(reset: boolean) {
+  const hasData = rocks.value.some(e => e)
+  if (!hasData || reset) {
+    score.value = 0
+    rocks.value = Array(16).fill(null)
+    add()
+    add()
+    add()
+  }
 }
 
 function cssTransition(e: rock | null) {
@@ -261,7 +260,7 @@ function createRock(index: number): any {
         cursor-pointer
         border-rd-2
 
-        @click="init"
+        @click="init(true)"
       >
         开始新的游戏
       </button>
