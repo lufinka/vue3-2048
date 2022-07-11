@@ -3,7 +3,7 @@ import { delay, getRockByPoint, handleDirect, isFull, isGameOver, isMobile, isSu
 import type { rock } from '~/types'
 
 const score = ref(0)
-let rocks = reactive<Array<rock | null>>([])
+const rocks = ref<Array<rock | null>>([])
 enum color {
   '#eee4da' = 2,
   '#ede0c8' = 4,
@@ -44,7 +44,7 @@ onMounted(() => {
     }
   })
   document.addEventListener('touchstart', (start) => {
-    const moveFunc = (move) => {
+    const moveFunc = (move: any) => {
       move && move.preventDefault()
       const dx = move.touches[0].clientX - start.touches[0].clientX
       const dy = move.touches[0].clientY - start.touches[0].clientY
@@ -77,7 +77,7 @@ function init() {
 }
 
 function initRocks() {
-  rocks = Array(16).fill(null)
+  rocks.value = Array(16).fill(null)
   add()
   add()
   add()
@@ -101,13 +101,13 @@ function cssTransition(e: rock | null) {
 }
 
 function add() {
-  if (isFull(rocks)) {
+  if (isFull(rocks.value)) {
     return false
   }
   else {
     const ids: Array<number> = []
     for (let i = 0; i < 16; i++) {
-      if (!rocks[i])
+      if (!rocks.value[i])
         ids.push(i)
     }
     const index = ids[~~(Math.random() * ids.length)]
@@ -116,14 +116,14 @@ function add() {
 }
 
 function turn(direct: 'right' | 'left' | 'up' | 'down') {
-  rocks.forEach((e) => {
+  rocks.value.forEach((e) => {
     if (e) {
       e.canCalc = true
       e.isNew = false
     }
   })
   Promise.all(
-    handleDirect(direct).handleArr(rocks)
+    handleDirect(direct).handleArr(rocks.value)
       .filter((rock: rock) => rock)
       .map(async (e: rock) => {
         const flag = calcAxis({ e, direct })
@@ -131,7 +131,7 @@ function turn(direct: 'right' | 'left' | 'up' | 'down') {
       }),
   ).then((res) => {
     if (res.includes(true)) {
-      if (isSuccess(rocks)) {
+      if (isSuccess(rocks.value)) {
         alert('你真牛逼，你赢了，我服了')
         return
       }
@@ -140,11 +140,11 @@ function turn(direct: 'right' | 'left' | 'up' | 'down') {
       }
     }
     else {
-      if (isGameOver(rocks)) {
+      if (isGameOver(rocks.value)) {
         alert('游戏结束请重新开始')
         return
       }
-      else if (isSuccess(rocks)) {
+      else if (isSuccess(rocks.value)) {
         alert('你真牛逼，你赢了，我服了')
         return
       }
@@ -155,9 +155,9 @@ function turn(direct: 'right' | 'left' | 'up' | 'down') {
 }
 
 /**
-       * 合并数字块时添加移动样式
-       * @param next
-       */
+ * 合并数字块时添加移动样式
+ * @param next
+ */
 function mergeNumericBlockAddStyle(next: rock) {
   (document.querySelector(`#r${next.id}`) as Element).animate([
     { transform: 'scale(0.95)' },
@@ -173,14 +173,14 @@ function mergeNumericBlockAddStyle(next: rock) {
 function calcAxis({ e, direct }: { e: rock; direct: 'right' | 'left' | 'up' | 'down' }) {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
-    const next = getRockByPoint(handleDirect(direct).next(e), rocks)
+    const next = getRockByPoint(handleDirect(direct).next(e), rocks.value)
     if (next && next.num !== e.num) {
       resolve(false)
     }
     else if (next && next.canCalc && next.num === e.num) {
       // 进行数字块的移动
       handleDirect(direct).handleMove(e)
-      rocks.splice(getIndex(e.id), 1, null)
+      rocks.value.splice(getIndex(e.id), 1, null)
       next.num *= 2
       score.value += next.num
       next.canCalc = false
@@ -200,7 +200,7 @@ function calcAxis({ e, direct }: { e: rock; direct: 'right' | 'left' | 'up' | 'd
 }
 
 function getIndex(id: number) {
-  return rocks.findIndex(rock => rock && rock.id === id)
+  return rocks.value.findIndex(rock => rock && rock.id === id)
 }
 
 /**
@@ -220,43 +220,110 @@ function createRock(index: number): any {
   const _isExist = getRockByPoint({
     x: result.x,
     y: result.y,
-  }, rocks)
-  if (_isExist) {
+  }, rocks.value)
+  if (_isExist)
     return createRock(index)
-  }
-  else {
-    // rocks[index] = result
-    // $set(rocks, [index], result)
-    rocks[index] = result
-  }
+  else
+    rocks.value[index] = result
 }
 </script>
 
 <template>
-  <div class="layout">
-    <header>
-      <span class="score">总分：{{ score }}</span>
-      <button class="star" @click="init">
+  <div
+    class="layout"
+    overflow-auto
+    flex="~ col"
+    items-center
+    h-full
+    scrolling-touch
+    justify-center
+  >
+    <header
+      flex="~"
+      mxw-600
+      w-full
+      pd-20
+      justify-between
+    >
+      <span
+        wh-100
+        inline-flex
+        items-center
+        justify-center
+      >总分：{{ score }}</span>
+      <button
+        bg-coolgray
+        text-white
+        border-none
+        text-2xl
+        pd-20
+        cursor-pointer
+        border-rd-2
+
+        @click="init"
+      >
         开始新的游戏
       </button>
-      <span class="sd" />
     </header>
-    {{ rocks }}
-    <div class="all-container">
-      <div class="background">
-        <span v-for="v in 16" :key="v" />
+    <div important-text-left wh-500 hh-500>
+      <div
+        box-content
+        bg-white
+        inline-flex
+        flex-wrap
+        p-2
+        justify-between
+        border-rd-2
+        wh-480
+        position-absolute
+        z-0
+      >
+        <span
+          v-for="v in 16"
+          :key="v"
+          bg-gray-100
+          mg-10
+          wh-100
+          hh-100
+          border-rd-2 z-1
+        />
       </div>
-      <div class="container">
+      <div
+        z-0
+        pd-10
+        wh-480
+        hh-480
+        inline-flex
+        position-absolute
+        justify-start
+        items-start
+        touch-none
+        select-none
+      >
         <span
           v-for="(e, index) in rocks"
           :key="index"
-          class="list"
+          mr-1
+          wh-100
+          hh-100
+          border-rd-2
+          position-absolute
+          text-5xl
+          fw500
+          mg-10
+          transition-property-transform
           :style="cssTransition(e)"
         >
           <span
             :id="`r${e && e.id}`"
-            class="inner"
-            :style="`backgroundColor: ${e ? e.color : ''}`"
+            inline-flex
+            w-full
+            h-full
+            text-white
+            items-center
+            justify-content
+            border-rd-2
+            :style="`background-color: ${e ? e.color : ''}`"
           >
             {{ e ? e.num : '' }}
           </span>
@@ -265,163 +332,3 @@ function createRock(index: number): any {
     </div>
   </div>
 </template>
-
-<style lang="scss">
-  .show {
-    position: fixed;
-    bottom: 50vh;
-    left: 20px;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: -27%;
-  }
-  body {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .layout {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    overflow: auto;
-    header {
-      display: flex;
-      max-width: 600px;
-      width: 100%;
-      padding: 20px;
-      flex-direction: row;
-      justify-content: space-around;
-      button {
-        border: none;
-        background: #8f7a66;
-        color: #fff;
-        font-size: 20px;
-        padding: 10px 30px;
-        cursor: pointer;
-        border-radius: 10px;
-      }
-      span {
-        width: 100px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-      }
-    }
-    .all-container {
-      height: 500px;
-      width: 500px;
-      text-align: left !important;
-      .background {
-        box-sizing: content-box;
-        background-color: #bbada0;
-        display: inline-flex;
-        flex-wrap: wrap;
-        padding: 10px;
-        justify-content: space-between;
-        border-radius: 10px;
-        width: 480px;
-        position: absolute;
-        z-index: 0;
-        & > span {
-          background-color: rgba(238,228,218,0.35);
-          margin: 10px;
-          width: 100px;
-          height: 100px;
-          border-radius: 10px;
-          z-index: 1;
-        }
-      }
-      .container {
-        z-index: 0;
-        padding: 10px;
-        width: 480px;
-        height: 480px;
-        display: inline-flex;
-        position: absolute;
-        justify-content: flex-start;
-        align-items: flex-start;
-        -webkit-touch-callout: none;
-        -ms-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        -ms-touch-action: none;
-        touch-action: none;
-        .list {
-          margin: 10px;
-          width: 100px;
-          height: 100px;
-          border-radius: 10px;
-          position: absolute;
-          font-size: 50px;
-          font-weight: bold;
-          transition-property: transform;
-          border-radius: 10px;
-          .inner {
-            width: 100%;
-            height: 100%;
-            color: #fff;
-            display: inline-flex;
-            align-items: center;
-            border-radius: 10px;
-            justify-content: center;
-            animation-fill-mode: backwards;
-            animation: appear 200ms ease-in-out;
-          }
-        }
-      }
-    }
-  }
-  @media screen and (max-width: 900px) {
-    html,body{
-      overflow: hidden;
-    }
-    .layout{
-      overflow: hidden;
-      header {
-        span{
-          width: 70px;
-        }
-        button {
-          padding: 10px 15px;
-        }
-      }
-      .all-container {
-        margin: 2vw;
-        width: 96vw;
-        height: 96vw;
-
-        .background,.container {
-          width: 96vw;
-          height: 96vw;
-          box-sizing: border-box;
-          padding: 1vw;
-          & > span,.list {
-            width: 21vw;
-            height: 21vw;
-            margin: 1vw;
-            font-size: 8vw;
-          }
-        }
-      }
-    }
-  }
-  @keyframes appear {
-    0% {
-      opacity: 0;
-      transform: scale(0);
-    }
-    80% {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-</style>

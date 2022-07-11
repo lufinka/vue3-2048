@@ -14,7 +14,7 @@ const { t } = useI18n()
 <template>
   <div>
     <games />
-    <div text-4xl>
+    <!-- <div text-4xl>
       <div i-carbon-campsite inline-block />
     </div>
     <p>
@@ -26,9 +26,9 @@ const { t } = useI18n()
       <em text-sm opacity-75>{{ t('intro.desc') }}</em>
     </p>
 
-    <div py-4 />
+    <div py-4 /> -->
 
-    <input
+    <!-- <input
       id="input"
       v-model="name"
       :placeholder="t('intro.whats-your-name')"
@@ -53,7 +53,7 @@ const { t } = useI18n()
       >
         {{ t('button.go') }}
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
