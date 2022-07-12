@@ -61,11 +61,8 @@ onMounted(() => {
 
 <template>
   <div
-    class="layout"
-    overflow-auto
     flex="~ col"
     items-center
-    h-full
     scrolling-touch
     justify-center
   >
@@ -73,7 +70,7 @@ onMounted(() => {
       flex="~"
       mxw-500
       w-full
-      pd-20
+      p-y-4
       justify-between
     >
       <span
@@ -86,7 +83,7 @@ onMounted(() => {
         text-white
         border-none
         text-2xl
-        pd-20
+        p-2
         cursor-pointer
         border-rd-2
 
@@ -101,7 +98,7 @@ onMounted(() => {
         bg-white
         inline-flex
         flex-wrap
-        p-2
+        p-4
         justify-between
         border-rd-2
         wh-480
@@ -115,12 +112,13 @@ onMounted(() => {
           mg-10
           wh-100
           hh-100
-          border-rd-2 z-1
+          border-rd-2
+          z-1
         />
       </div>
       <div
         z-0
-        pd-10
+        p-4
         wh-480
         hh-480
         inline-flex
@@ -133,14 +131,13 @@ onMounted(() => {
         <span
           v-for="(e, index) in play.state.value.rocks"
           :key="index"
-          mr-1
+          mg-10
           wh-100
           hh-100
           border-rd-2
           position-absolute
-          text-5xl
+          :class="{ 'text-5xl': e && e.num < 999, 'text-4xl': e && e.num > 999 }"
           fw500
-          mg-10
           transition-property-transform
           :style="play.cssTransition(e)"
         >
@@ -149,9 +146,10 @@ onMounted(() => {
             inline-flex
             w-full
             h-full
+            important-text-center
             text-white
             items-center
-            justify-content
+            justify-center
             border-rd-2
             :style="`background-color: ${e ? e.color : ''}`"
           >
@@ -162,3 +160,10 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
+<style lang="scss">
+body{
+  height: 100vh;
+  overflow: hidden;
+}
+</style>
