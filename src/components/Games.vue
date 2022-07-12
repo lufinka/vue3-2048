@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { GamePlay } from '~/composables/logic'
 const directX = 30
-const play = new GamePlay(2048)
+const play = new GamePlay(2048, 'easy')
 
 const now = $(useNow())
 const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
@@ -78,45 +78,48 @@ onMounted(() => {
         inline-flex
         items-center
       >总分：{{ play.state.value.score }}</span>
-      <button
-        bg-green
-        text-white
-        border-none
-        text-2xl
-        p-2
-        cursor-pointer
-        border-rd-2
+      <div>
+        <button
+          bg-green
+          text-white
+          border-none
+          text-2xl
+          p-2
+          cursor-pointer
+          border-rd-2
 
-        @click="play.reset(2048, 'easy')"
-      >
-        简单
-      </button>
-      <button
-        bg-blue
-        text-white
-        border-none
-        text-2xl
-        p-2
-        cursor-pointer
-        border-rd-2
+          @click="play.reset(2048, 'easy')"
+        >
+          简单
+        </button>
+        <button
+          bg-blue
+          text-white
+          border-none
+          text-2xl
+          p-2
+          m-x-3
+          cursor-pointer
+          border-rd-2
 
-        @click="play.reset(2048, 'medium')"
-      >
-        中等
-      </button>
-      <button
-        bg-red
-        text-white
-        border-none
-        text-2xl
-        p-2
-        cursor-pointer
-        border-rd-2
+          @click="play.reset(2048, 'medium')"
+        >
+          中等
+        </button>
+        <button
+          bg-red
+          text-white
+          border-none
+          text-2xl
+          p-2
+          cursor-pointer
+          border-rd-2
 
-        @click="play.reset(2048, 'hard')"
-      >
-        困难
-      </button>
+          @click="play.reset(2048, 'hard')"
+        >
+          困难
+        </button>
+      </div>
     </header>
     <div important-text-left wh-500 hh-500>
       <div
