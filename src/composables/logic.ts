@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { delay, getRockByPoint, handleDirect, isFull, isGameOver, random0123, random24 } from '~/modules/tool'
+import { delay, getRockByPoint, handleDirect, isFull, isGameOver, isMobile, random0123, random24 } from '~/modules/tool'
 import type { rock } from '~/types'
 
 enum color {
@@ -12,6 +12,7 @@ enum color {
   '#edcf72' = 128,
   '#edcc61' = 256,
   '#0444BF' = 512,
+  '#F56C6C' = 666,
   '#A79674' = 1024,
   '#282726' = 2048,
   '#280b21' = 4096,
@@ -87,14 +88,14 @@ export class GamePlay {
  * return rock
  */
   createRock(index: number, mine?: 'mine'): any {
-    const num = random24()
+    const num = mine ? 666 : random24()
     const result = {
       x: random0123(),
       y: random0123(),
-      num: mine ? 666 : num,
+      num,
       isNew: true,
       id: index + 1,
-      color: mine ? 'red' : color[num],
+      color: color[num],
     }
     const _isExist = getRockByPoint({
       x: result.x,

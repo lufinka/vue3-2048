@@ -7,6 +7,8 @@ export const pointSort = (property: 'x' | 'y') => (firstRocks: rock, secondRocks
   return firstPoint < secondPoint ? -1 : 1
 }
 
+export const isMobile = () => window.navigator.userAgent.match(/Mobile/)
+
 // 生成2/4数字(4出现的概率为10%)
 export const random24 = () => Math.random() > 0.9 ? 4 : 2
 // 生成0/1/2/3数字做为坐标
