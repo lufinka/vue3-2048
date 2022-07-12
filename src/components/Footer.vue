@@ -27,7 +27,8 @@ const toggleLocales = () => {
     </RouterLink>
 
     <a class="icon-btn mx-2" rel="noreferrer" href="https://github.com/antfu/vitesse" target="_blank" title="GitHub">
-      <div i-carbon-logo-github />
+      <!-- <div i-carbon-logo-github /> -->
+      <div i-mdi-mine />
     </a>
   </nav>
 </template>

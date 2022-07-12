@@ -13,6 +13,7 @@ enum color {
   '#edcc61' = 256,
   '#0444BF' = 512,
   '#F56C6C' = 666,
+  '#E6A23C' = 777,
   '#A79674' = 1024,
   '#282726' = 2048,
   '#280b21' = 4096,
@@ -57,18 +58,18 @@ export class GamePlay {
         break
       case 'medium':
         this.add()
-        this.add('mine')
+        this.add(666)
         this.add()
         break
       case 'hard':
-        this.add('mine')
-        this.add('mine')
+        this.add(666)
+        this.add(777)
         this.add()
         break
     }
   }
 
-  add(mine?: 'mine') {
+  add(mine?: number) {
     if (isFull(this.state.value.rocks)) {
       return false
     }
@@ -87,8 +88,8 @@ export class GamePlay {
  * 创建一个不存在数字块
  * return rock
  */
-  createRock(index: number, mine?: 'mine'): any {
-    const num = mine ? 666 : random24()
+  createRock(index: number, mine?: number): any {
+    const num = mine || random24()
     const result = {
       x: random0123(),
       y: random0123(),
@@ -105,23 +106,6 @@ export class GamePlay {
       return this.createRock(index)
     else
       this.state.value.rocks[index] = result
-  }
-
-  cssTransition(e: rock | null) {
-    if (isMobile()) {
-      return {
-        zIndex: e ? e.num : 0,
-        transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-        transform: `translate(${(e ? e.x : 0) * 23.5}vw, ${(e ? e.y : 0) * 23.5}vw)`,
-      }
-    }
-    else {
-      return {
-        zIndex: e ? e.num : 0,
-        transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-        transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
-      }
-    }
   }
 
   turn(direct: 'right' | 'left' | 'up' | 'down') {
