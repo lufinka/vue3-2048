@@ -10,22 +10,6 @@ const now = $(useNow())
 const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
 useStorage('2048-state', play.state)
 
-function cssTransition(e: rock | null) {
-  if (isMobile()) {
-    return {
-      zIndex: e ? e.num : 0,
-      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-      transform: `translate(${(e ? e.x : 0) * 23.5}vw, ${(e ? e.y : 0) * 23.5}vw)`,
-    }
-  }
-  else {
-    return {
-      zIndex: e ? e.num : 0,
-      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-      transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
-    }
-  }
-}
 onMounted(() => {
   document.addEventListener('keydown', (e) => {
     switch (e.key.toLocaleUpperCase()) {
@@ -75,6 +59,23 @@ onMounted(() => {
       document.removeEventListener('touchmove', moveFunc)
     })
   })
+
+  function cssTransition(e: rock | null) {
+    if (isMobile()) {
+      return {
+        zIndex: e ? e.num : 0,
+        transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
+        transform: `translate(${(e ? e.x : 0) * 23.5}vw, ${(e ? e.y : 0) * 23.5}vw)`,
+      }
+    }
+    else {
+      return {
+        zIndex: e ? e.num : 0,
+        transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
+        transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
+      }
+    }
+  }
 })
 </script>
 
