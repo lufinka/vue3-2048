@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { delay, getRockByPoint, handleDirect, isFull, isGameOver, isMobile, random0123, random24 } from '~/modules/tool'
+import { delay, getRockByPoint, handleDirect, isFull, isGameOver, random0123, random24 } from '~/modules/tool'
 import type { rock } from '~/types'
 
 enum color {
@@ -130,6 +130,12 @@ export class GamePlay {
         e.isNew = false
       }
     })
+
+    if (this.state.value.status === 'ready') {
+      this.state.value.status = 'play'
+      this.state.value.startMS = +new Date()
+    }
+
     Promise.all(
       handleDirect(direct).handleArr(this.state.value.rocks)
         .filter((rock: rock) => rock)
@@ -140,6 +146,7 @@ export class GamePlay {
     ).then((res) => {
       if (res.includes(true)) {
         if (this.isSuccess(this.state.value.rocks)) {
+          this.state.value.status = 'won'
           alert('你真牛逼，你赢了，我服了')
           return
         }
@@ -149,10 +156,12 @@ export class GamePlay {
       }
       else {
         if (isGameOver(this.state.value.rocks)) {
+          this.state.value.status = 'lost'
           alert('游戏结束请重新开始')
           return
         }
         else if (this.isSuccess(this.state.value.rocks)) {
+          this.state.value.status = 'won'
           alert('你真牛逼，你赢了，我服了')
           return
         }
@@ -180,7 +189,7 @@ export class GamePlay {
   // 处理移动距离的函数
   calcAxis({ e, direct }: { e: rock; direct: 'right' | 'left' | 'up' | 'down' }) {
     // eslint-disable-next-line no-async-promise-executor
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       const next = getRockByPoint(handleDirect(direct).next(e), this.state.value.rocks)
       if (next && next.num !== e.num) {
         resolve(false)
@@ -212,9 +221,9 @@ export class GamePlay {
   }
 
   /**
- * 游戏是否过关
- * return true过关，反之未过关
- */
+   * 游戏是否过关
+   * return true过关，反之未过关
+   */
   isSuccess(rocks: Array<rock | null>) {
     const result = rocks.find((e) => {
       return e && e.num === this.targetScore

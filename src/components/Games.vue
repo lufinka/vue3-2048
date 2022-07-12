@@ -187,6 +187,7 @@ onMounted(() => {
         </span>
       </div>
     </div>
+    <Confetti :passed="play.state.value.status === 'won'" />
   </div>
 </template>
 
