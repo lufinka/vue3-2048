@@ -32,25 +32,42 @@ export class GamePlay {
   state = ref() as Ref<GameState>
   constructor(
     public targetScore: number,
+    public difficulty: 'easy' | 'medium' | 'hard',
   ) {
-    this.reset(2048)
+    this.reset(targetScore, difficulty)
   }
 
   reset(
     targetScore = this.targetScore,
+    difficulty = this.difficulty,
   ) {
     this.targetScore = targetScore
+    this.difficulty = difficulty
     this.state.value = {
       score: 0,
       status: 'ready',
       rocks: Array(16).fill(null),
     }
-    this.add()
-    this.add()
-    this.add()
+    switch (difficulty) {
+      case 'easy':
+        this.add()
+        this.add()
+        this.add()
+        break
+      case 'medium':
+        this.add()
+        this.add('mine')
+        this.add()
+        break
+      case 'hard':
+        this.add('mine')
+        this.add('mine')
+        this.add()
+        break
+    }
   }
 
-  add() {
+  add(mine?: 'mine') {
     if (isFull(this.state.value.rocks)) {
       return false
     }
@@ -61,7 +78,7 @@ export class GamePlay {
           ids.push(i)
       }
       const index = ids[~~(Math.random() * ids.length)]
-      this.createRock(index)
+      this.createRock(index, mine)
     }
   }
 
@@ -69,15 +86,15 @@ export class GamePlay {
  * 创建一个不存在数字块
  * return rock
  */
-  createRock(index: number): any {
+  createRock(index: number, mine?: 'mine'): any {
     const num = random24()
     const result = {
       x: random0123(),
       y: random0123(),
-      num,
+      num: mine ? 666 : num,
       isNew: true,
       id: index + 1,
-      color: color[num],
+      color: mine ? 'red' : color[num],
     }
     const _isExist = getRockByPoint({
       x: result.x,

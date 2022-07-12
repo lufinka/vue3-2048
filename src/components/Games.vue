@@ -68,7 +68,7 @@ onMounted(() => {
   >
     <header
       flex="~"
-      mxw-500
+      mxw-512
       w-full
       p-y-4
       justify-between
@@ -79,7 +79,7 @@ onMounted(() => {
         items-center
       >总分：{{ play.state.value.score }}</span>
       <button
-        bg-coolgray
+        bg-green
         text-white
         border-none
         text-2xl
@@ -87,9 +87,35 @@ onMounted(() => {
         cursor-pointer
         border-rd-2
 
-        @click="play.reset(2048)"
+        @click="play.reset(2048, 'easy')"
       >
-        开始新的游戏
+        简单
+      </button>
+      <button
+        bg-blue
+        text-white
+        border-none
+        text-2xl
+        p-2
+        cursor-pointer
+        border-rd-2
+
+        @click="play.reset(2048, 'medium')"
+      >
+        中等
+      </button>
+      <button
+        bg-red
+        text-white
+        border-none
+        text-2xl
+        p-2
+        cursor-pointer
+        border-rd-2
+
+        @click="play.reset(2048, 'hard')"
+      >
+        困难
       </button>
     </header>
     <div important-text-left wh-500 hh-500>
