@@ -86,13 +86,3 @@ export const isGameOver = (rocks: Array<rock | null>) => {
   return result === undefined
 }
 
-/**
- * 游戏是否过关
- * return true过关，反之未过关
- */
-export const isSuccess = (rocks: Array<rock | null>) => {
-  const result = rocks.find((e) => {
-    return e && e.num === 8192
-  })
-  return result !== undefined
-}
