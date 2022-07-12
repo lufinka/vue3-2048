@@ -108,6 +108,23 @@ export class GamePlay {
       this.state.value.rocks[index] = result
   }
 
+  cssTransition(e: rock | null) {
+    // if (isMobile()) {
+    //   return {
+    //     zIndex: e ? e.num : 0,
+    //     transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
+    //     transform: `translate(${(e ? e.x : 0) * 23.5}vw, ${(e ? e.y : 0) * 23.5}vw)`,
+    //   }
+    // }
+    // else {
+    return {
+      zIndex: e ? e.num : 0,
+      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
+      transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
+    }
+    // }
+  }
+
   turn(direct: 'right' | 'left' | 'up' | 'down') {
     this.state.value.rocks.forEach((e) => {
       if (e) {

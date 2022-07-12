@@ -1,29 +1,11 @@
 <script setup lang="ts">
 import { GamePlay } from '~/composables/logic'
-import { isMobile } from '~/modules/tool'
-import type { rock } from '~/types'
 const directX = 30
 const play = new GamePlay(2048, 'easy')
 
 const now = $(useNow())
 const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
 useStorage('2048-state', play.state)
-function cssTransition(e: rock | null) {
-  if (isMobile()) {
-    return {
-      zIndex: e ? e.num : 0,
-      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-      transform: `translate(${(e ? e.x : 0) * 23.5}vw, ${(e ? e.y : 0) * 23.5}vw)`,
-    }
-  }
-  else {
-    return {
-      zIndex: e ? e.num : 0,
-      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-      transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
-    }
-  }
-}
 
 onMounted(() => {
   document.addEventListener('keydown', (e) => {
@@ -186,7 +168,7 @@ onMounted(() => {
           :class="{ 'text-5xl': e && e.num < 999, 'text-4xl': e && e.num > 999 }"
           fw500
           transition-property-transform
-          :style="cssTransition(e)"
+          :style="play.cssTransition(e)"
         >
           <span
             :id="`r${e && e.id}`"
