@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { delay, getRockByPoint, handleDirect, isFull, isGameOver, isMobile, random0123, random24 } from '~/modules/tool'
+import { delay, getRockByPoint, handleDirect, isFull, isGameOver, random0123, random24 } from '~/modules/tool'
 import type { rock } from '~/types'
 
 enum color {
@@ -109,7 +109,7 @@ export class GamePlay {
   }
 
   cssTransition(e: rock | null) {
-    if (isMobile()) {
+    if (window.navigator.userAgent.match(/Mobile/)) {
       return {
         zIndex: e ? e.num : 0,
         transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
