@@ -108,23 +108,6 @@ export class GamePlay {
       this.state.value.rocks[index] = result
   }
 
-  cssTransition(e: rock | null) {
-    if (window.navigator.userAgent.match(/Mobile/)) {
-      return {
-        zIndex: e ? e.num : 0,
-        transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-        transform: `translate(${(e ? e.x : 0) * 23.5}vw, ${(e ? e.y : 0) * 23.5}vw)`,
-      }
-    }
-    else {
-      return {
-        zIndex: e ? e.num : 0,
-        transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-        transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
-      }
-    }
-  }
-
   turn(direct: 'right' | 'left' | 'up' | 'down') {
     this.state.value.rocks.forEach((e) => {
       if (e) {
@@ -149,7 +132,7 @@ export class GamePlay {
       if (res.includes(true)) {
         if (this.isSuccess(this.state.value.rocks)) {
           this.state.value.status = 'won'
-          alert('你真牛逼，你赢了，我服了')
+          alert('you won!')
           return
         }
         else {
@@ -159,12 +142,12 @@ export class GamePlay {
       else {
         if (isGameOver(this.state.value.rocks)) {
           this.state.value.status = 'lost'
-          alert('游戏结束请重新开始')
+          alert('game over!')
           return
         }
         else if (this.isSuccess(this.state.value.rocks)) {
           this.state.value.status = 'won'
-          alert('你真牛逼，你赢了，我服了')
+          alert('you won!')
           return
         }
       }
