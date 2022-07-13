@@ -147,6 +147,7 @@ onMounted(() => {
         justify-between
         border-rd-2
         lg:wh-480
+        lg:hh-480
         vw-96
         vh-96
         position-absolute
