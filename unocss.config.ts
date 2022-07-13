@@ -22,6 +22,9 @@ export default defineConfig({
     [/^mxw-(\d+)$/, ([, d]) => ({ 'max-width': `${d}px` })],
     [/^vw-(\d+)$/, ([, d]) => ({ width: `${d}vw` })],
     [/^vh-(\d+)$/, ([, d]) => ({ height: `${d}vw` })],
+    [/^mg-vh-(\d+)$/, ([, d]) => ({ margin: `${d}vw` })],
+    [/^px-v-(\d+)$/, ([, d]) => ({ padding: `0 ${d}vw` })],
+    [/^pl-v-(\d+)$/, ([, d]) => ({ 'padding-left': `${d}vw` })],
   ],
   presets: [
     presetUno(),
@@ -44,13 +47,4 @@ export default defineConfig({
     transformerVariantGroup(),
   ],
   safelist: 'prose prose-sm m-auto text-left'.split(' '),
-  theme: {
-    extend: {
-      screens: {
-        mobile: {
-          raw: 'screen and (min-width: 320px) and (max-width: 900px)',
-        },
-      },
-    },
-  },
 })

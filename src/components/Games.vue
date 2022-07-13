@@ -63,8 +63,10 @@ onMounted(() => {
   <div
     scrolling-touch
     w-full
+    lg:px-4
     lg:mxw-512
     sm:w-screen
+    px-v-2
     m-auto
   >
     <header
@@ -131,20 +133,22 @@ onMounted(() => {
     </header>
     <div
       important-text-left
-      hh-500
+      lg:hh-500
       lg:wh-500
-      sm:w-full
+      vw-96
+      vh-96
     >
       <div
         box-content
         bg-white
         inline-flex
         flex-wrap
-        p-4
+        lg:p-4
         justify-between
         border-rd-2
         lg:wh-480
-        sm:w-full
+        vw-96
+        vh-96
         position-absolute
         z-0
       >
@@ -152,21 +156,23 @@ onMounted(() => {
           v-for="v in 16"
           :key="v"
           bg-gray-100
-          mg-10
+          lg:mg-10
           lg:wh-100
           lg:hh-100
-          sm:vh-24
-          sm:vw-24
+          vh-20
+          vw-20
+          mg-vh-2
           border-rd-2
           z-1
         />
       </div>
       <div
         z-0
-        p-4
+        lg:p-4
         lg:wh-480
         lg:hh-480
-        sm:w-full
+        vw-96
+        vh-96
         inline-flex
         position-absolute
         justify-start
@@ -177,11 +183,12 @@ onMounted(() => {
         <span
           v-for="(e, index) in play.state.value.rocks"
           :key="index"
-          mg-10
+          lg:mg-10
           lg:wh-100
           lg:hh-100
-          sm:vh-24
-          sm:vw-24
+          vh-20
+          vw-20
+          mg-vh-2
           border-rd-2
           position-absolute
           :class="{ 'text-5xl': e && e.num < 999, 'text-4xl': e && e.num > 999 }"

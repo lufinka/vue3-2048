@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import { delay, getRockByPoint, handleDirect, isFull, isGameOver, random0123, random24 } from '~/modules/tool'
 import type { rock } from '~/types'
-
+const { width } = useWindowSize()
 enum color {
   '#eee4da' = 2,
   '#ede0c8' = 4,
@@ -111,20 +111,20 @@ export class GamePlay {
   }
 
   cssTransition(e: rock | null) {
-    // if (isMobile()) {
-    //   return {
-    //     zIndex: e ? e.num : 0,
-    //     transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-    //     transform: `translate(${(e ? e.x : 0) * 23.5}vw, ${(e ? e.y : 0) * 23.5}vw)`,
-    //   }
-    // }
-    // else {
-    return {
-      zIndex: e ? e.num : 0,
-      transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
-      transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
+    if (width.value <= 640) {
+      return {
+        zIndex: e ? e.num : 0,
+        transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
+        transform: `translate(${(e ? e.x : 0) * 24}vw, ${(e ? e.y : 0) * 24}vw)`,
+      }
     }
-    // }
+    else {
+      return {
+        zIndex: e ? e.num : 0,
+        transition: (e && e.isNew) ? 'none' : '100ms ease-in-out',
+        transform: `translate(${(e ? e.x : 0) * 120}px, ${(e ? e.y : 0) * 120}px)`,
+      }
+    }
   }
 
   turn(direct: 'right' | 'left' | 'up' | 'down') {
