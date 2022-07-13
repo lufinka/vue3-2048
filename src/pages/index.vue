@@ -12,7 +12,8 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div>
+  <div w-full>
+    <span text-center text-3xl pb-2>2048</span>
     <games />
     <!-- <div text-4xl>
       <div i-carbon-campsite inline-block />

@@ -28,6 +28,7 @@ interface GameState {
   status: GameStatus
   startMS?: number
   endMS?: number
+  difficulty: 'easy' | 'medium' | 'hard'
 }
 
 export class GamePlay {
@@ -49,6 +50,7 @@ export class GamePlay {
       score: 0,
       status: 'ready',
       rocks: Array(16).fill(null),
+      difficulty: this.difficulty,
     }
     switch (difficulty) {
       case 'easy':

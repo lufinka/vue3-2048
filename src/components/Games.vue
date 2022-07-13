@@ -61,67 +61,80 @@ onMounted(() => {
 
 <template>
   <div
-    flex="~ col"
-    items-center
     scrolling-touch
-    justify-center
+    w-full
+    lg:mxw-512
+    sm:w-screen
+    m-auto
   >
     <header
       flex="~"
-      mxw-512
       w-full
       p-y-4
+      items-center
       justify-between
     >
       <span
-        text-2xl
+        lg:text-2xl
+        sm:text-sm
         inline-flex
         items-center
       >总分：{{ play.state.value.score }}</span>
       <div>
         <button
           bg-green
-          text-white
-          border-none
-          text-2xl
-          p-2
-          cursor-pointer
+          border-green
+          border-2
           border-rd-2
-
+          :class="{ 'bg-white': play.state.value.difficulty === 'easy', 'text-white': play.state.value.difficulty !== 'easy', 'text-green': play.state.value.difficulty === 'easy' }"
+          lg:text-2xl
+          sm:text-sm
+          p-x-2
+          p-y-1
+          cursor-pointer
           @click="play.reset(2048, 'easy')"
         >
           简单
         </button>
         <button
           bg-blue
-          text-white
-          border-none
-          text-2xl
-          p-2
+          :class="{ 'bg-white': play.state.value.difficulty === 'medium', 'text-white': play.state.value.difficulty !== 'medium', 'text-blue': play.state.value.difficulty === 'medium' }"
+          border-blue
+          lg:text-2xl
+          sm:text-sm
+          p-x-2
+          p-y-1
           m-x-3
           cursor-pointer
+          border-2
           border-rd-2
-
           @click="play.reset(2048, 'medium')"
         >
           中等
         </button>
         <button
           bg-red
-          text-white
-          border-none
-          text-2xl
-          p-2
+          :class="{ 'bg-white': play.state.value.difficulty === 'hard', 'text-white': play.state.value.difficulty !== 'hard', 'text-red': play.state.value.difficulty === 'hard' }"
+          border-red
+          lg:text-2xl
+          sm:text-sm
+          p-x-2
+          p-y-1
           cursor-pointer
+          border-2
           border-rd-2
-
           @click="play.reset(2048, 'hard')"
         >
           困难
         </button>
       </div>
     </header>
-    <div important-text-left wh-500 hh-500>
+    <div
+      important-text-left
+      hh-500
+      lg:wh-500
+      sm:w-full
+    >
       <div
         box-content
         bg-white
@@ -130,7 +143,8 @@ onMounted(() => {
         p-4
         justify-between
         border-rd-2
-        wh-480
+        lg:wh-480
+        sm:w-full
         position-absolute
         z-0
       >
@@ -139,8 +153,10 @@ onMounted(() => {
           :key="v"
           bg-gray-100
           mg-10
-          wh-100
-          hh-100
+          lg:wh-100
+          lg:hh-100
+          sm:vh-24
+          sm:vw-24
           border-rd-2
           z-1
         />
@@ -148,8 +164,9 @@ onMounted(() => {
       <div
         z-0
         p-4
-        wh-480
-        hh-480
+        lg:wh-480
+        lg:hh-480
+        sm:w-full
         inline-flex
         position-absolute
         justify-start
@@ -161,8 +178,10 @@ onMounted(() => {
           v-for="(e, index) in play.state.value.rocks"
           :key="index"
           mg-10
-          wh-100
-          hh-100
+          lg:wh-100
+          lg:hh-100
+          sm:vh-24
+          sm:vw-24
           border-rd-2
           position-absolute
           :class="{ 'text-5xl': e && e.num < 999, 'text-4xl': e && e.num > 999 }"
@@ -196,5 +215,11 @@ onMounted(() => {
 body{
   height: 100vh;
   overflow: hidden;
+}
+@screen mobile {
+   .container {
+     height: 100px;
+     width: 100px;
+   }
 }
 </style>

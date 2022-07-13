@@ -20,6 +20,8 @@ export default defineConfig({
     [/^mg-(\d+)$/, ([, d]) => ({ margin: `${d}px` })],
     [/^pd-(\d+)$/, ([, d]) => ({ padding: `${d}px` })],
     [/^mxw-(\d+)$/, ([, d]) => ({ 'max-width': `${d}px` })],
+    [/^vw-(\d+)$/, ([, d]) => ({ width: `${d}vw` })],
+    [/^vh-(\d+)$/, ([, d]) => ({ height: `${d}vw` })],
   ],
   presets: [
     presetUno(),
@@ -42,4 +44,13 @@ export default defineConfig({
     transformerVariantGroup(),
   ],
   safelist: 'prose prose-sm m-auto text-left'.split(' '),
+  theme: {
+    extend: {
+      screens: {
+        mobile: {
+          raw: 'screen and (min-width: 320px) and (max-width: 900px)',
+        },
+      },
+    },
+  },
 })
