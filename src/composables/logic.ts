@@ -149,27 +149,19 @@ export class GamePlay {
         }),
     ).then((res) => {
       if (res.includes(true)) {
-        if (this.isSuccess(this.state.value.rocks)) {
+        if (this.isSuccess(this.state.value.rocks))
           this.state.value.status = 'won'
-          return
-        }
-        else {
-          this.add()
-        }
+        this.add()
       }
       else {
         if (isGameOver(this.state.value.rocks)) {
           this.state.value.status = 'lost'
           alert('game over!')
-          return
         }
         else if (this.isSuccess(this.state.value.rocks)) {
           this.state.value.status = 'won'
-          return
         }
       }
-      setTimeout(() => {
-      }, 10)
     })
   }
 

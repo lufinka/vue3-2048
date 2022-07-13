@@ -95,6 +95,7 @@ onMounted(() => {
           sm:text-sm
           p-x-2
           p-y-1
+          outline-none
           cursor-pointer
           @click="play.reset(2048, 'easy')"
         >
@@ -109,6 +110,7 @@ onMounted(() => {
           p-x-2
           p-y-1
           m-x-3
+          outline-none
           cursor-pointer
           border-2
           border-rd-2
@@ -124,6 +126,7 @@ onMounted(() => {
           sm:text-sm
           p-x-2
           p-y-1
+          outline-none
           cursor-pointer
           border-2
           border-rd-2
