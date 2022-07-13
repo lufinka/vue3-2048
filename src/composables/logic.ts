@@ -151,7 +151,6 @@ export class GamePlay {
       if (res.includes(true)) {
         if (this.isSuccess(this.state.value.rocks)) {
           this.state.value.status = 'won'
-          alert('you won!')
           return
         }
         else {
@@ -166,7 +165,6 @@ export class GamePlay {
         }
         else if (this.isSuccess(this.state.value.rocks)) {
           this.state.value.status = 'won'
-          alert('you won!')
           return
         }
       }
