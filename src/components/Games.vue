@@ -64,7 +64,8 @@ onMounted(() => {
     scrolling-touch
     w-full
     lg:px-4
-    lg:mxw-512
+    lg:mxw-500
+    lg:pd-10
     sm:w-screen
     px-v-2
     m-auto
@@ -72,7 +73,7 @@ onMounted(() => {
     <header
       flex="~"
       w-full
-      p-y-4
+      pd-10
       items-center
       justify-between
     >
@@ -88,6 +89,7 @@ onMounted(() => {
           border-green
           border-2
           border-rd-2
+          active:border-none
           :class="{ 'bg-white': play.state.value.difficulty === 'easy', 'text-white': play.state.value.difficulty !== 'easy', 'text-green': play.state.value.difficulty === 'easy' }"
           lg:text-2xl
           sm:text-sm
@@ -143,7 +145,6 @@ onMounted(() => {
         bg-white
         inline-flex
         flex-wrap
-        lg:p-4
         justify-between
         border-rd-2
         lg:wh-480
@@ -169,7 +170,6 @@ onMounted(() => {
       </div>
       <div
         z-0
-        lg:p-4
         lg:wh-480
         lg:hh-480
         vw-96
