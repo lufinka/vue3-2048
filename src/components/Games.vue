@@ -143,7 +143,7 @@ onMounted(() => {
         </button>
       </div>
     </header>
-    <div
+    <!-- <div
       important-text-left
       lg:wh-500
       vw-96
@@ -239,7 +239,7 @@ onMounted(() => {
       >
         占位专用
       </div>
-    </div>
+    </div> -->
     <Confetti :passed="play.state.value.status === 'won'" />
   </div>
 </template>
