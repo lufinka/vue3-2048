@@ -34,7 +34,6 @@ interface GameState {
   endMS?: number
   difficulty: 'easy' | 'medium' | 'hard'
 }
-export const Level = level
 export class GamePlay {
   state = ref() as Ref<GameState>
   constructor(
@@ -230,6 +229,10 @@ export class GamePlay {
 
   getIndex(id: number) {
     return this.state.value.rocks.findIndex(rock => rock && rock.id === id)
+  }
+
+  getLevels(index?: number) {
+    return index ? level[index] : level
   }
 
   /**

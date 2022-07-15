@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { GamePlay, Level } from '~/composables/logic'
+import { GamePlay } from '~/composables/logic'
 const directX = 30
 const play = new GamePlay(2048, 'easy')
-
+const levels = play.getLevels()
 const now = $(useNow())
 const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
 useStorage('2048-state', play.state)
@@ -160,7 +160,7 @@ onMounted(() => {
         z-0
       >
         <div
-          v-for="(mapItem, index) in Level[play.state.value.level].map"
+          v-for="(mapItem, index) in levels[play.state.value.level].map"
           :key="index"
           z-1
           lg:hh-100
@@ -229,7 +229,7 @@ onMounted(() => {
         </span>
       </div>
       <div
-        v-for="(mapItem, index) in Level[play.state.value.level].map"
+        v-for="(mapItem, index) in levels[play.state.value.level].map"
         :key="index"
         z--1
         lg:hh-100
