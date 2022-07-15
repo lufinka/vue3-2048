@@ -13,7 +13,7 @@ const { t } = useI18n()
 
 <template>
   <div w-full mt-4>
-    <span text-center text-3xl>2048</span>
+    <!-- <span text-center text-3xl>2048</span> -->
     <games />
     <!-- <div text-4xl>
       <div i-carbon-campsite inline-block />

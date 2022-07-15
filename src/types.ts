@@ -11,6 +11,9 @@ export interface rock {
   id: number
   color: string
 }
+export interface LevelItem {
+  map: Array<Array<number>>
+}
 
 export interface handleDirectResult {
   handleArr: Function

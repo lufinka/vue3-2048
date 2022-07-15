@@ -1,5 +1,6 @@
 import type { Ref } from 'vue'
-import { delay, getRockByPoint, handleDirect, isFull, isGameOver, random0123, random24 } from '~/modules/tool'
+import { level } from './level'
+import { delay, getRockByPoint, handleDirect, isFull, isGameOver, random024, random24 } from '~/modules/tool'
 import type { rock } from '~/types'
 const { width } = useWindowSize()
 enum color {
@@ -24,7 +25,10 @@ type GameStatus = 'ready' | 'play' | 'won' | 'lost'
 
 interface GameState {
   rocks: Array<rock | null>
-  score: number
+  score: number // 当前分数
+  highestScore: number // 最高分
+  level: number // 关卡
+  tackle: number[] // 道具
   status: GameStatus
   startMS?: number
   endMS?: number
@@ -40,6 +44,10 @@ export class GamePlay {
     this.reset(targetScore, difficulty)
   }
 
+  get currentLevel() {
+    return level[this.state.value.level]
+  }
+
   reset(
     targetScore = this.targetScore,
     difficulty = this.difficulty,
@@ -49,6 +57,9 @@ export class GamePlay {
     this.state.value = {
       score: 0,
       status: 'ready',
+      highestScore: 0,
+      level: 0,
+      tackle: [1, 1, 1],
       rocks: Array(16).fill(null),
       difficulty: this.difficulty,
     }
@@ -93,8 +104,8 @@ export class GamePlay {
   createRock(index: number, mine?: number): any {
     const num = mine || random24()
     const result = {
-      x: random0123(),
-      y: random0123(),
+      x: random024(this.currentLevel.map[0].length),
+      y: random024(this.currentLevel.map[0].length),
       num,
       isNew: true,
       id: index + 1,
@@ -104,7 +115,8 @@ export class GamePlay {
       x: result.x,
       y: result.y,
     }, this.state.value.rocks)
-    if (_isExist)
+    const isDisableRock = this.currentLevel.map[result.x][result.y] === 0
+    if (_isExist || isDisableRock)
       return this.createRock(index)
     else
       this.state.value.rocks[index] = result
@@ -141,7 +153,7 @@ export class GamePlay {
     }
 
     Promise.all(
-      handleDirect(direct).handleArr(this.state.value.rocks)
+      handleDirect(direct, this.state.value.level).handleArr(this.state.value.rocks)
         .filter((rock: rock) => rock)
         .map(async (e: rock) => {
           const flag = this.calcAxis({ e, direct })
@@ -154,7 +166,7 @@ export class GamePlay {
         this.add()
       }
       else {
-        if (isGameOver(this.state.value.rocks)) {
+        if (isGameOver(this.state.value.rocks, this.currentLevel.map)) {
           this.state.value.status = 'lost'
           alert('game over!')
         }
@@ -184,13 +196,13 @@ export class GamePlay {
   calcAxis({ e, direct }: { e: rock; direct: 'right' | 'left' | 'up' | 'down' }) {
     // eslint-disable-next-line no-async-promise-executor
     return new Promise(async (resolve) => {
-      const next = getRockByPoint(handleDirect(direct).next(e), this.state.value.rocks)
+      const next = getRockByPoint(handleDirect(direct, this.state.value.level).next(e), this.state.value.rocks)
       if (next && next.num !== e.num) {
         resolve(false)
       }
       else if (next && next.canCalc && next.num === e.num) {
         // 进行数字块的移动
-        handleDirect(direct).handleMove(e)
+        handleDirect(direct, this.state.value.level).handleMove(e)
         this.state.value.rocks.splice(this.getIndex(e.id), 1, null)
         next.num *= 2
         this.state.value.score += next.num
@@ -201,8 +213,8 @@ export class GamePlay {
         resolve(true)
       }
       else if (next === undefined) {
-        if (handleDirect(direct).handleCondition(e)) {
-          handleDirect(direct).handleMove(e)
+        if (handleDirect(direct, this.state.value.level).handleCondition(e)) {
+          handleDirect(direct, this.state.value.level).handleMove(e)
           this.calcAxis({ e, direct })
         }
         resolve(true)

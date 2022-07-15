@@ -1,4 +1,6 @@
 import type { handleDirectResult, rock } from '~/types'
+import { level } from '~/composables/level'
+
 export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export const pointSort = (property: 'x' | 'y') => (firstRocks: rock, secondRocks: rock) => {
@@ -12,16 +14,19 @@ export const isMobile = () => window.navigator.userAgent.match(/Mobile/)
 // 生成2/4数字(4出现的概率为10%)
 export const random24 = () => Math.random() > 0.9 ? 4 : 2
 // 生成0/1/2/3数字做为坐标
-export const random0123 = () => ~~(Math.random() * 4)
+export const random024 = (x: number) => ~~(Math.random() * x)
 
-export const handleDirect = (direct: 'right' | 'left' | 'up' | 'down'): handleDirectResult => {
+export const handleDirect = (direct: 'right' | 'left' | 'up' | 'down', stateLevel: number): handleDirectResult => {
+  const currentLevel = level[stateLevel]
+  const maxWidth = currentLevel.map[0].length - 1
+  const maxHeight = currentLevel.map.length - 1
   if (direct === 'right') {
     return {
       handleArr: (arr: Array<rock>) => arr
-        .filter((e: rock) => e && e.x !== 3)
+        .filter((e: rock) => e && e.x !== maxWidth)
         .sort(pointSort('x'))
         .reverse(),
-      handleCondition: (e: rock) => e.x < 3,
+      handleCondition: (e: rock) => e.x < maxWidth,
       next: (e: rock) => ({ x: e.x + 1, y: e.y }),
       handleMove: (e: rock) => e.x++,
     }
@@ -48,10 +53,10 @@ export const handleDirect = (direct: 'right' | 'left' | 'up' | 'down'): handleDi
   }
   return {
     handleArr: (arr: Array<rock>) => arr
-      .filter((e: rock) => e && e.y !== 3)
+      .filter((e: rock) => e && e.y !== maxHeight)
       .sort(pointSort('y'))
       .reverse(),
-    handleCondition: (e: rock) => e.y < 3,
+    handleCondition: (e: rock) => e.y < maxHeight,
     next: (e: rock) => ({ x: e.x, y: e.y + 1 }),
     handleMove(e: rock) { e.y++ },
   }
@@ -63,7 +68,7 @@ export const handleDirect = (direct: 'right' | 'left' | 'up' | 'down'): handleDi
  * @param y
  * @returns {undefined|T|T}
  */
-export const getRockByPoint = ({ x, y }: { x: number; y: number }, rocks: Array<rock | null>) => rocks.filter(rock => rock).find(rock => rock.x === x && rock.y === y)
+export const getRockByPoint = ({ x, y }: { x: number; y: number }, rocks: Array<rock | null>) => rocks.filter(rock => rock).find(rock => rock?.x === x && rock?.y === y)
 
 /**
  * 罗盘是否已经填充满了
@@ -74,14 +79,18 @@ export const isFull = (rocks: Array<rock | null>) => rocks?.filter(e => e).lengt
  * 是否游戏失败
  * return true失败，反之没有结束
  */
-export const isGameOver = (rocks: Array<rock | null>) => {
-  const result = isFull(rocks) && rocks
-    .filter(e => e && (e.x !== 3 || e.y !== 3))
+export const isGameOver = (rocks: Array<rock | null>, currentLevel: Array<Array<number>>) => {
+  const result = isFull(rocks) && rocks?.filter(e => e && (e.x !== (currentLevel[0].length - 1) || e.y !== currentLevel.length - 1))
     .find((e) => {
-      const nextX = getRockByPoint({ x: e.x + 1, y: e.y }, rocks)
-      const nextY = getRockByPoint({ x: e.x, y: e.y + 1 }, rocks)
-      return (e.num === (nextX && nextX.num)
+      if (e) {
+        const nextX = getRockByPoint({ x: e.x + 1, y: e.y }, rocks)
+        const nextY = getRockByPoint({ x: e.x, y: e.y + 1 }, rocks)
+        return (e.num === (nextX && nextX.num)
               || e.num === (nextY && nextY.num))
+      }
+      else {
+        return false
+      }
     })
   return result === undefined
 }

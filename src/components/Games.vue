@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { level } from '~/composables/level'
 import { GamePlay } from '~/composables/logic'
 const directX = 30
 const play = new GamePlay(2048, 'easy')
@@ -6,7 +7,12 @@ const play = new GamePlay(2048, 'easy')
 const now = $(useNow())
 const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
 useStorage('2048-state', play.state)
-
+// 关卡（X）  当前分数  最高分
+// 游戏
+// 游戏
+// 游戏
+// 游戏
+// 对调位置  消除 重排
 onMounted(() => {
   document.addEventListener('keydown', (e) => {
     switch (e.key.toLocaleUpperCase()) {
@@ -82,7 +88,8 @@ onMounted(() => {
         sm:text-sm
         inline-flex
         items-center
-      >总分：{{ play.state.value.score }}</span>
+      >总分：{{ play.state.value.score }}
+      </span>
       <div>
         <button
           bg-green
@@ -138,10 +145,9 @@ onMounted(() => {
     </header>
     <div
       important-text-left
-      lg:hh-500
       lg:wh-500
       vw-96
-      vh-96
+      position-relative
     >
       <div
         box-content
@@ -151,32 +157,37 @@ onMounted(() => {
         justify-between
         border-rd-2
         lg:wh-480
-        lg:hh-480
         vw-96
-        vh-96
         position-absolute
         z-0
       >
-        <span
-          v-for="v in 16"
-          :key="v"
-          bg-gray-100
-          lg:mg-10
-          lg:wh-100
-          lg:hh-100
-          vh-20
-          vw-20
-          mg-vh-2
-          border-rd-2
+        <div
+          v-for="(mapItem, index) in level[play.state.value.level].map"
+          :key="index"
           z-1
-        />
+          lg:hh-100
+          vh-24
+          w-full
+        >
+          <span
+            v-for="(item, i) in mapItem"
+            :key="`${index}${i}`"
+            :class="{ 'bg-gray-500': item === 0, 'bg-gray-100': item !== 0 }"
+            inline-block
+            lg:mg-10
+            lg:wh-100
+            vh-20
+            vw-20
+            border-rd-2
+            mg-vh-2
+            z-2
+          />
+        </div>
       </div>
       <div
         z-0
         lg:wh-480
-        lg:hh-480
         vw-96
-        vh-96
         inline-flex
         position-absolute
         justify-start
@@ -216,6 +227,16 @@ onMounted(() => {
             <span v-else>{{ e ? e.num : '' }}</span>
           </span>
         </span>
+      </div>
+      <div
+        v-for="(mapItem, index) in level[play.state.value.level].map"
+        :key="index"
+        z--1
+        lg:hh-100
+        vh-24
+        w-full
+      >
+        占位专用
       </div>
     </div>
     <Confetti :passed="play.state.value.status === 'won'" />
