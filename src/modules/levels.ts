@@ -3,15 +3,6 @@ import type { LevelItem } from '~/types'
 export const levels: Array<LevelItem> = [
   {
     map: [
-      [0, 1, 1, 1],
-      [0, 1, 1, 1],
-      [1, 1, 1, 1],
-      [1, 1, 1, 0],
-      [1, 1, 1, 0],
-    ],
-  },
-  {
-    map: [
       [1, 1, 1, 1],
       [1, 1, 1, 1],
       [1, 1, 1, 1],

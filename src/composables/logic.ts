@@ -62,7 +62,11 @@ export class GamePlay {
       rocks: Array(16).fill(null),
       difficulty: this.difficulty,
     }
-    switch (difficulty) {
+    this.addRocks()
+  }
+
+  addRocks() {
+    switch (this.difficulty) {
       case 'easy':
         this.add()
         this.add()
@@ -79,6 +83,14 @@ export class GamePlay {
         this.add()
         break
     }
+  }
+
+  next() {
+    this.state.value.level += 1
+    this.state.value.score = 0
+    this.state.value.status = 'ready'
+    this.state.value.rocks = Array(16).fill(null)
+    this.addRocks()
   }
 
   add(mine?: number) {
@@ -160,8 +172,11 @@ export class GamePlay {
         }),
     ).then((res) => {
       if (res.includes(true)) {
-        if (this.isSuccess(this.state.value.rocks))
+        if (this.isSuccess(this.state.value.rocks)) {
           this.state.value.status = 'won'
+          alert('you won，next level!')
+          this.next()
+        }
         this.add()
       }
       else {
@@ -171,6 +186,8 @@ export class GamePlay {
         }
         else if (this.isSuccess(this.state.value.rocks)) {
           this.state.value.status = 'won'
+          alert('you won，next level!')
+          this.next()
         }
       }
     })
@@ -205,6 +222,7 @@ export class GamePlay {
         this.state.value.rocks.splice(this.getIndex(e.id), 1, null)
         next.num *= 2
         this.state.value.score += next.num
+        this.state.value.highestScore += next.num
         next.canCalc = false
         next.color = color[next.num]
         this.mergeNumericBlockAddStyle(next)
