@@ -115,7 +115,7 @@ export class GamePlay {
       x: result.x,
       y: result.y,
     }, this.state.value.rocks)
-    const isDisableRock = this.currentLevel.map[result.x][result.y] === 0
+    const isDisableRock = this.currentLevel.map[result.y][result.x] === 0
     if (_isExist || isDisableRock)
       return this.createRock(index)
     else
@@ -213,11 +213,17 @@ export class GamePlay {
         resolve(true)
       }
       else if (next === undefined) {
-        if (handleDirect(direct, this.state.value.level).handleCondition(e)) {
-          handleDirect(direct, this.state.value.level).handleMove(e)
-          this.calcAxis({ e, direct })
+        const nextRock = handleDirect(direct, this.state.value.level).next(e)
+        if (this.currentLevel.map[nextRock.y][nextRock.x] === 0) {
+          resolve(false)
         }
-        resolve(true)
+        else {
+          if (handleDirect(direct, this.state.value.level).handleCondition(e)) {
+            handleDirect(direct, this.state.value.level).handleMove(e)
+            this.calcAxis({ e, direct })
+          }
+          resolve(true)
+        }
       }
     })
   }
