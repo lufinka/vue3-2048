@@ -147,7 +147,6 @@ onMounted(() => {
       important-text-left
       lg:wh-500
       vw-96
-      position-relative
     >
       <div
         box-content
@@ -166,6 +165,7 @@ onMounted(() => {
           :key="index"
           z-1
           lg:hh-100
+          lg:mg-y-10
           vh-24
           w-full
         >
@@ -174,12 +174,13 @@ onMounted(() => {
             :key="`${index}${i}`"
             :class="{ 'bg-gray-500': item === 0, 'bg-gray-100': item !== 0 }"
             inline-block
-            lg:mg-10
             lg:wh-100
+            lg:hh-100
+            lg:mg-x-10
+            mg-vh-2
             vh-20
             vw-20
             border-rd-2
-            mg-vh-2
             z-2
           />
         </div>
