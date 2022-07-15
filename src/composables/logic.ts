@@ -1,5 +1,5 @@
 import type { Ref } from 'vue'
-import { level } from './level'
+import { levels } from '../modules/levels'
 import { delay, getRockByPoint, handleDirect, isFull, isGameOver, random024, random24 } from '~/modules/tool'
 import type { rock } from '~/types'
 const { width } = useWindowSize()
@@ -44,7 +44,7 @@ export class GamePlay {
   }
 
   get currentLevel() {
-    return level[this.state.value.level]
+    return levels[this.state.value.level]
   }
 
   reset(
@@ -229,10 +229,6 @@ export class GamePlay {
 
   getIndex(id: number) {
     return this.state.value.rocks.findIndex(rock => rock && rock.id === id)
-  }
-
-  getLevels(index?: number) {
-    return index ? level[index] : level
   }
 
   /**

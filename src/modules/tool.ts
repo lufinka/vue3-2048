@@ -1,5 +1,5 @@
 import type { handleDirectResult, rock } from '~/types'
-import { level } from '~/composables/level'
+import { levels } from '~/modules/levels'
 
 export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 

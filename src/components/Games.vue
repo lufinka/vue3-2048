@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { GamePlay } from '~/composables/logic'
+import { levels } from '~/modules/levels'
 const directX = 30
 const play = new GamePlay(2048, 'easy')
-const levels = play.getLevels()
 const now = $(useNow())
 const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
 useStorage('2048-state', play.state)
@@ -75,6 +75,7 @@ onMounted(() => {
     px-v-2
     m-auto
   >
+    {{ levels }}
     <header
       flex="~"
       w-full
