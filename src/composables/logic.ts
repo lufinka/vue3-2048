@@ -34,7 +34,7 @@ interface GameState {
   endMS?: number
   difficulty: 'easy' | 'medium' | 'hard'
 }
-
+export const Level = level
 export class GamePlay {
   state = ref() as Ref<GameState>
   constructor(

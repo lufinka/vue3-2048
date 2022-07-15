@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { level } from '~/composables/level'
-import { GamePlay } from '~/composables/logic'
+import { GamePlay, Level } from '~/composables/logic'
 const directX = 30
 const play = new GamePlay(2048, 'easy')
 
@@ -161,7 +160,7 @@ onMounted(() => {
         z-0
       >
         <div
-          v-for="(mapItem, index) in level[play.state.value.level].map"
+          v-for="(mapItem, index) in Level[play.state.value.level].map"
           :key="index"
           z-1
           lg:hh-100
@@ -230,7 +229,7 @@ onMounted(() => {
         </span>
       </div>
       <div
-        v-for="(mapItem, index) in level[play.state.value.level].map"
+        v-for="(mapItem, index) in Level[play.state.value.level].map"
         :key="index"
         z--1
         lg:hh-100
