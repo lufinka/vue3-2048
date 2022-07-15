@@ -17,7 +17,7 @@ export const random24 = () => Math.random() > 0.9 ? 4 : 2
 export const random024 = (x: number) => ~~(Math.random() * x)
 
 export const handleDirect = (direct: 'right' | 'left' | 'up' | 'down', stateLevel: number): handleDirectResult => {
-  const currentLevel = level[stateLevel]
+  const currentLevel = levels[stateLevel]
   const maxWidth = currentLevel.map[0].length - 1
   const maxHeight = currentLevel.map.length - 1
   if (direct === 'right') {
