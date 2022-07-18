@@ -26,7 +26,6 @@ type GameStatus = 'ready' | 'play' | 'won' | 'lost'
 interface GameState {
   rocks: Array<rock | null>
   score: number // 当前分数
-  highestScore: number // 最高分
   level: number // 关卡
   tackle: number[] // 道具
   status: GameStatus
@@ -36,6 +35,7 @@ interface GameState {
 }
 export class GamePlay {
   state = ref() as Ref<GameState>
+  highestScore = ref<number>(0) // 最高分
   constructor(
     public targetScore: number,
     public difficulty: 'easy' | 'medium' | 'hard',
@@ -56,7 +56,6 @@ export class GamePlay {
     this.state.value = {
       score: 0,
       status: 'ready',
-      highestScore: 0,
       level: 0,
       tackle: [1, 1, 1],
       rocks: Array(16).fill(null),
@@ -222,7 +221,12 @@ export class GamePlay {
         this.state.value.rocks.splice(this.getIndex(e.id), 1, null)
         next.num *= 2
         this.state.value.score += next.num
-        this.state.value.highestScore += next.num
+        if ((this.state.value.level === 0 && this.state.value.score >= this.highestScore.value))
+          this.highestScore.value = this.state.value.score
+
+        if (this.state.value.level !== 0)
+          this.highestScore.value = next.num + this.highestScore.value
+
         next.canCalc = false
         next.color = color[next.num]
         this.mergeNumericBlockAddStyle(next)

@@ -2,10 +2,11 @@
 import { GamePlay } from '~/composables/logic'
 import { levels } from '~/modules/levels'
 const directX = 30
-const play = new GamePlay(128, 'easy')
+const play = new GamePlay(2048, 'easy')
 const now = $(useNow())
 const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
 useStorage('2048-state', play.state)
+useStorage('highest-score', play.highestScore)
 // 关卡（X）  当前分数  最高分
 // 游戏
 // 游戏
@@ -89,8 +90,7 @@ onMounted(() => {
         text-left
       >
         <p w-full>分数：{{ play.state.value.score }}</p>
-        <p w-full>最高分数：{{ play.state.value.highestScore }}</p>
-        <button @click="play.next()">next</button>
+        <p w-full>最高分数：{{ play.highestScore }}</p>
       </span>
       <div>
         <button
