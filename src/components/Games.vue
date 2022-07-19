@@ -83,15 +83,6 @@ onMounted(() => {
       items-center
       justify-between
     >
-      <span
-        lg:text-2xl
-        sm:text-sm
-        inline-block
-        text-left
-      >
-        <p w-full>分数：{{ play.state.value.score }}</p>
-        <p w-full>最高分数：{{ play.highestScore }}</p>
-      </span>
       <div>
         <button
           bg-green
@@ -143,6 +134,30 @@ onMounted(() => {
         >
           困难
         </button>
+      </div>
+      <div
+        lg:text-2xl
+        lg:p-x-8
+        sm:text-sm
+        pl-v-4
+        flex-1
+        flex="~"
+        inline-block
+        items-center
+        justify-between
+      >
+        <p>
+          关卡 <br>
+          <span text-xl><b text-2xl>{{ play.state.value.level + 1 }}</b>/{{ play.levelCounts }}</span>
+        </p>
+        <p>
+          分数 <br>
+          <span text-2xl>{{ play.state.value.score }}</span>
+        </p>
+        <p>
+          最高分数 <br>
+          <span text-2xl>{{ play.highestScore }}</span>
+        </p>
       </div>
     </header>
     <div

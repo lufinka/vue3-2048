@@ -36,6 +36,7 @@ interface GameState {
 export class GamePlay {
   state = ref() as Ref<GameState>
   highestScore = ref<number>(0) // 最高分
+  levelCounts = levels.length // 关卡数
   constructor(
     public targetScore: number,
     public difficulty: 'easy' | 'medium' | 'hard',
