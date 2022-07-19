@@ -69,101 +69,44 @@ onMounted(() => {
   <div
     scrolling-touch
     w-full
-    lg:px-4
-    lg:mxw-500
-    lg:pd-10
+    lg:p-x-4px
+    lg:max-w-500px
+    lg:p-10px
     sm:w-screen
-    px-v-2
+    p-x-2vw
     m-auto
   >
     <header
       flex="~"
       w-full
-      pd-10
+      p-10px
       items-center
       justify-between
     >
-      <div>
-        <button
-          bg-green
-          border-green
-          border-2
-          border-rd-2
-          active:border-none
-          :class="{ 'bg-white': play.state.value.difficulty === 'easy', 'text-white': play.state.value.difficulty !== 'easy', 'text-green': play.state.value.difficulty === 'easy' }"
-          lg:text-2xl
-          sm:text-sm
-          p-x-2
-          p-y-1
-          outline-none
-          cursor-pointer
-          @click="play.reset(2048, 'easy')"
-        >
-          简单
-        </button>
-        <button
-          bg-blue
-          :class="{ 'bg-white': play.state.value.difficulty === 'medium', 'text-white': play.state.value.difficulty !== 'medium', 'text-blue': play.state.value.difficulty === 'medium' }"
-          border-blue
-          lg:text-2xl
-          sm:text-sm
-          p-x-2
-          p-y-1
-          m-x-3
-          outline-none
-          cursor-pointer
-          border-2
-          border-rd-2
-          @click="play.reset(2048, 'medium')"
-        >
-          中等
-        </button>
-        <button
-          bg-red
-          :class="{ 'bg-white': play.state.value.difficulty === 'hard', 'text-white': play.state.value.difficulty !== 'hard', 'text-red': play.state.value.difficulty === 'hard' }"
-          border-red
-          lg:text-2xl
-          sm:text-sm
-          p-x-2
-          p-y-1
-          outline-none
-          cursor-pointer
-          border-2
-          border-rd-2
-          @click="play.reset(2048, 'hard')"
-        >
-          困难
-        </button>
-      </div>
-      <div
+      <p text-xl>
+        关卡：<span><b text-3xl text-green font-bold>{{ play.state.value.level + 1 }}</b>/{{ play.levelCounts }}</span>
+      </p>
+      <p
         lg:text-2xl
         lg:p-x-8
-        sm:text-sm
-        pl-v-4
-        flex-1
-        flex="~"
-        inline-block
-        items-center
-        justify-between
+        text-xl
       >
-        <p>
-          关卡 <br>
-          <span text-xl><b text-2xl>{{ play.state.value.level + 1 }}</b>/{{ play.levelCounts }}</span>
-        </p>
-        <p>
-          分数 <br>
-          <span text-2xl>{{ play.state.value.score }}</span>
-        </p>
-        <p>
-          最高分数 <br>
-          <span text-2xl>{{ play.highestScore }}</span>
-        </p>
-      </div>
+        分数 <br>
+        <span text-xl text-blue font-bold>{{ play.state.value.score }}</span>
+      </p>
+      <p
+        lg:text-2xl
+        lg:p-x-8px
+        text-xl
+      >
+        最高分 <br>
+        <span text-xl text-red font-bold>{{ play.highestScore }}</span>
+      </p>
     </header>
     <div
       important-text-left
-      lg:wh-500
-      vw-96
+      lg:w-500px
+      w-96vw
     >
       <div
         box-content
@@ -172,8 +115,8 @@ onMounted(() => {
         flex-wrap
         justify-between
         border-rd-2
-        lg:wh-480
-        vw-96
+        lg:w-480px
+        w-96vw
         position-absolute
         z-0
       >
@@ -181,9 +124,9 @@ onMounted(() => {
           v-for="(mapItem, index) in levels[play.state.value.level].map"
           :key="index"
           z-1
-          lg:hh-100
-          lg:mg-y-10
-          vh-24
+          lg:h-100px
+          lg:m-y-10px
+          h-24vw
           w-full
         >
           <span
@@ -191,12 +134,12 @@ onMounted(() => {
             :key="`${index}${i}`"
             :class="{ 'bg-gray-500': item === 0, 'bg-gray-100': item !== 0 }"
             inline-block
-            lg:wh-100
-            lg:hh-100
-            lg:mg-x-10
-            mg-vh-2
-            vh-20
-            vw-20
+            lg:w-100px
+            lg:h-100px
+            lg:m-x-10px
+            m-2vw
+            h-20vw
+            w-20vw
             border-rd-2
             z-2
           />
@@ -204,8 +147,8 @@ onMounted(() => {
       </div>
       <div
         z-0
-        lg:wh-480
-        vw-96
+        lg:w-480px
+        w-96vw
         inline-flex
         position-absolute
         justify-start
@@ -216,16 +159,16 @@ onMounted(() => {
         <span
           v-for="(e, index) in play.state.value.rocks"
           :key="index"
-          lg:mg-10
-          lg:wh-100
-          lg:hh-100
-          vh-20
-          vw-20
-          mg-vh-2
+          lg:m-10px
+          lg:w-100px
+          lg:h-100px
+          h-20vw
+          w-20vw
+          m-2vw
           border-rd-2
           position-absolute
           :class="{ 'text-5xl': e && e.num < 999, 'text-4xl': e && e.num > 999 }"
-          fw500
+          font-500
           transition-property-transform
           :style="play.cssTransition(e)"
         >
@@ -250,11 +193,83 @@ onMounted(() => {
         v-for="(mapItem, index) in levels[play.state.value.level].map"
         :key="index"
         z--1
-        lg:hh-100
-        vh-24
+        lg:h-100px
+        h-24vw
         w-full
       >
         占位专用
+      </div>
+    </div>
+    <div
+      flex="~"
+      p-10px
+      items-center
+      justify-between
+    >
+      <div>
+        <button
+          bg-green
+          border-green
+          border-2
+          border-rd-2
+          :class="{ 'bg-white': play.state.value.difficulty === 'easy', 'text-white': play.state.value.difficulty !== 'easy', 'text-green': play.state.value.difficulty === 'easy' }"
+          lg:text-2xl
+          sm:text-sm
+          p-x-2
+          p-y-2px
+          outline-none
+          cursor-pointer
+          @click="play.reset(2048, 'easy')"
+        >
+          简单
+        </button>
+        <button
+          bg-blue
+          :class="{ 'bg-white': play.state.value.difficulty === 'medium', 'text-white': play.state.value.difficulty !== 'medium', 'text-blue': play.state.value.difficulty === 'medium' }"
+          border-blue
+          lg:text-2xl
+          sm:text-sm
+          p-x-2
+          p-y-2px
+          m-x-3
+          outline-none
+          cursor-pointer
+          border-2
+          border-rd-2
+          @click="play.reset(2048, 'medium')"
+        >
+          中等
+        </button>
+        <button
+          bg-red
+          :class="{ 'bg-white': play.state.value.difficulty === 'hard', 'text-white': play.state.value.difficulty !== 'hard', 'text-red': play.state.value.difficulty === 'hard' }"
+          border-red
+          lg:text-2xl
+          sm:text-sm
+          p-x-2
+          p-y-2px
+          outline-none
+          cursor-pointer
+          border-2
+          border-rd-2
+          @click="play.reset(2048, 'hard')"
+        >
+          困难
+        </button>
+      </div>
+      <div inline-flex>
+        <div p-x-10px>
+          <p text-2xl i-carbon-cicsplex />
+          <span h-14px m-t--10px>对调</span>
+        </div>
+        <div p-x-10px>
+          <p text-2xl i-carbon-scan-disabled />
+          <span>消除</span>
+        </div>
+        <div pl-10px>
+          <p text-2xl i-carbon-ibm-cloud-vpc-endpoints />
+          <span>重排</span>
+        </div>
       </div>
     </div>
     <Confetti :passed="play.state.value.status === 'won'" />

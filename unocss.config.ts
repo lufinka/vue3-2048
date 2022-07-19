@@ -15,18 +15,7 @@ export default defineConfig({
     ['icon-btn', 'inline-block cursor-pointer select-none opacity-75 transition duration-200 ease-in-out hover:opacity-100 hover:text-teal-600'],
   ],
   rules: [
-    [/^wh-(\d+)$/, ([, d]) => ({ width: `${d}px` })],
-    [/^hh-(\d+)$/, ([, d]) => ({ height: `${d}px` })],
     [/^mg-(\d+)$/, ([, d]) => ({ margin: `${d}px` })],
-    [/^mg-y-(\d+)$/, ([, d]) => ({ margin: `${d}px 0` })],
-    [/^mg-x-(\d+)$/, ([, d]) => ({ margin: `0 ${d}px` })],
-    [/^pd-(\d+)$/, ([, d]) => ({ padding: `${d}px` })],
-    [/^mxw-(\d+)$/, ([, d]) => ({ 'max-width': `${d}px` })],
-    [/^vw-(\d+)$/, ([, d]) => ({ width: `${d}vw` })],
-    [/^vh-(\d+)$/, ([, d]) => ({ height: `${d}vw` })],
-    [/^mg-vh-(\d+)$/, ([, d]) => ({ margin: `${d}vw` })],
-    [/^px-v-(\d+)$/, ([, d]) => ({ padding: `0 ${d}vw` })],
-    [/^pl-v-(\d+)$/, ([, d]) => ({ 'padding-left': `${d}vw` })],
   ],
   presets: [
     presetUno(),
