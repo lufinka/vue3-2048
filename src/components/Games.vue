@@ -124,8 +124,7 @@ onMounted(() => {
           v-for="(mapItem, index) in levels[play.state.value.level].map"
           :key="index"
           z-1
-          lg:h-100px
-          lg:m-y-10px
+          lg:h-120px
           h-24vw
           w-full
         >
@@ -136,7 +135,7 @@ onMounted(() => {
             inline-block
             lg:w-100px
             lg:h-100px
-            lg:m-x-10px
+            lg:m-10px
             m-2vw
             h-20vw
             w-20vw
@@ -193,7 +192,7 @@ onMounted(() => {
         v-for="(mapItem, index) in levels[play.state.value.level].map"
         :key="index"
         z--1
-        lg:h-100px
+        lg:h-120px
         h-24vw
         w-full
       >
