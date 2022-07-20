@@ -83,8 +83,13 @@ onMounted(() => {
       items-center
       justify-between
     >
-      <p text-xl>
-        关卡：<span><b text-3xl text-green font-bold>{{ play.state.value.level + 1 }}</b>/{{ play.levelCounts }}</span>
+      <p
+        lg:text-2xl
+        lg:p-x-8
+        text-xl
+      >
+        关卡 <br>
+        <span><b text-2xl text-green font-bold>{{ play.state.value.level + 1 }}</b>/{{ play.levelCounts }}</span>
       </p>
       <p
         lg:text-2xl
@@ -170,6 +175,7 @@ onMounted(() => {
           font-500
           transition-property-transform
           :style="play.cssTransition(e)"
+          @click="play.clear(e)"
         >
           <span
             :id="`r${e && e.id}`"
@@ -257,17 +263,17 @@ onMounted(() => {
         </button>
       </div>
       <div inline-flex>
-        <div p-x-10px>
-          <p text-2xl i-carbon-cicsplex />
-          <span h-14px m-t--10px>对调</span>
+        <div p-x-10px @click="play.tackle.useTackle(0)">
+          <p text-2xl text-blue m-b--2px i-carbon-cicsplex />
+          <span h-14px text-gray text-sm>对调</span>
         </div>
-        <div p-x-10px>
-          <p text-2xl i-carbon-scan-disabled />
-          <span>消除</span>
+        <div p-x-10px @click="play.tackle.useTackle(1)">
+          <p text-2xl text-blue m-b--2px i-carbon-scan-disabled />
+          <span h-14px text-gray text-sm>消除</span>
         </div>
-        <div pl-10px>
-          <p text-2xl i-carbon-ibm-cloud-vpc-endpoints />
-          <span>重排</span>
+        <div pl-10px @click="play.tackle.useTackle(2)">
+          <p text-2xl text-blue m-b--2px i-carbon-ibm-cloud-vpc-endpoints />
+          <span h-14px text-gray text-sm>重排</span>
         </div>
       </div>
     </div>

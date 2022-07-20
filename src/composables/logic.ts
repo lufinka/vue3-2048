@@ -22,12 +22,14 @@ enum color {
 }
 
 type GameStatus = 'ready' | 'play' | 'won' | 'lost'
+type tackleStatuss = 'ready' | 'active' | 'disable'
 
 interface GameState {
   rocks: Array<rock | null>
   score: number // 当前分数
   level: number // 关卡
   tackle: number[] // 道具
+  tackleStatus: Array<tackleStatuss> // 道具状态
   status: GameStatus
   startMS?: number
   endMS?: number
@@ -37,6 +39,14 @@ export class GamePlay {
   state = ref() as Ref<GameState>
   highestScore = ref<number>(0) // 最高分
   levelCounts = levels.length // 关卡数
+
+  tackle = {
+    clear: (rock: rock | null) => this.clear(rock),
+    useTackle: (i: number) => this.useTackle(i),
+    rearrange: () => this.rearrange(),
+    swap: () => this.swap(),
+  }
+
   constructor(
     public targetScore: number,
     public difficulty: 'easy' | 'medium' | 'hard',
@@ -59,6 +69,7 @@ export class GamePlay {
       status: 'ready',
       level: 0,
       tackle: [1, 1, 1],
+      tackleStatus: ['ready', 'ready', 'ready'], // ready, active, disable
       rocks: Array(16).fill(null),
       difficulty: this.difficulty,
     }
@@ -263,5 +274,39 @@ export class GamePlay {
       return e && e.num === this.targetScore
     })
     return result !== undefined
+  }
+
+  clear(rock: rock | null) {
+    const index = this.state.value.rocks.findIndex(e => e && e.id === rock?.id)
+    if (this.state.value.tackleStatus[1] === 'active' && this.state.value.rocks[index]) {
+      this.state.value.tackle[1]--
+      this.state.value.rocks.splice(index, 1, null)
+      this.state.value.tackleStatus[1] = 'disable'
+    }
+  }
+
+  useTackle(i: number) {
+    switch (this.state.value.tackleStatus[i]) {
+      case 'ready':
+        this.state.value.tackleStatus[i] = 'active'
+        break
+      case 'active':
+        this.state.value.tackleStatus[i] = 'ready'
+        break
+    }
+  }
+
+  rearrange() {
+    if (this.state.value.tackleStatus[i] === 'active') {
+      this.state.value.tackle[i]--
+      const emptyRocks = this.state.value.rocks.filter((rock: rock | null) => !rock)
+      this.state.value.rocks = emptyRocks.concat(this.state.value.rocks.filter((rock: rock | null) => rock).sort((a: rock | null, b: rock | null) => {
+        return (b ? b.num : 0) - (a ? a.num : 0)
+      }))
+    }
+  }
+
+  swap(i: number, j: number) {
+
   }
 }
