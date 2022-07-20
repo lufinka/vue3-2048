@@ -175,7 +175,7 @@ onMounted(() => {
           font-500
           transition-property-transform
           :style="play.cssTransition(e)"
-          @click="play.clear(e)"
+          @click="play.tackle.handleRock(e)"
         >
           <span
             :id="`r${e && e.id}`"

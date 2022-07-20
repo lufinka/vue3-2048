@@ -40,8 +40,10 @@ export class GamePlay {
   highestScore = ref<number>(0) // 最高分
   levelCounts = levels.length // 关卡数
 
+  // todo 禁止消除障碍块
   tackle = {
     clear: (rock: rock | null) => this.clear(rock),
+    handleRock: (rock: rock | null) => this.handleRock(rock),
     useTackle: (i: number) => this.useTackle(i),
     rearrange: (i: number) => this.rearrange(i),
     swap: () => this.swap(),
@@ -278,10 +280,24 @@ export class GamePlay {
 
   clear(rock: rock | null) {
     const index = this.state.value.rocks.findIndex(e => e && e.id === rock?.id)
-    if (this.state.value.tackleStatus[1] === 'active' && this.state.value.rocks[index]) {
+    const currentRock = this.state.value.rocks[index]
+    const obstacleRock = currentRock && [666, 777].includes(currentRock.num)
+    if (this.state.value.tackleStatus[1] === 'active' && currentRock && !obstacleRock) {
       this.state.value.tackle[1]--
       this.state.value.rocks.splice(index, 1, null)
       this.state.value.tackleStatus[1] = 'disable'
+    }
+  }
+
+  handleRock(rock: rock | null) {
+    const acriveIndex = this.state.value.tackleStatus.findIndex(e => e === 'active')
+    switch (acriveIndex) {
+      case 0:
+        this.swap(rock)
+        break
+      case 1:
+        this.clear(rock)
+        break
     }
   }
 
