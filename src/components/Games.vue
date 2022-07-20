@@ -271,7 +271,7 @@ onMounted(() => {
           <p text-2xl text-blue m-b--2px i-carbon-scan-disabled />
           <span h-14px text-gray text-sm>消除</span>
         </div>
-        <div pl-10px @click="play.tackle.useTackle(2)">
+        <div pl-10px @click="() => { play.tackle.useTackle(2);play.tackle.rearrange(2) }">
           <p text-2xl text-blue m-b--2px i-carbon-ibm-cloud-vpc-endpoints />
           <span h-14px text-gray text-sm>重排</span>
         </div>

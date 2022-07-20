@@ -43,7 +43,7 @@ export class GamePlay {
   tackle = {
     clear: (rock: rock | null) => this.clear(rock),
     useTackle: (i: number) => this.useTackle(i),
-    rearrange: () => this.rearrange(),
+    rearrange: (i: number) => this.rearrange(i),
     swap: () => this.swap(),
   }
 
@@ -296,13 +296,26 @@ export class GamePlay {
     }
   }
 
-  rearrange() {
+  rearrange(i: number) {
     if (this.state.value.tackleStatus[i] === 'active') {
       this.state.value.tackle[i]--
       const emptyRocks = this.state.value.rocks.filter((rock: rock | null) => !rock)
-      this.state.value.rocks = emptyRocks.concat(this.state.value.rocks.filter((rock: rock | null) => rock).sort((a: rock | null, b: rock | null) => {
-        return (b ? b.num : 0) - (a ? a.num : 0)
+      const arr = emptyRocks.concat(this.state.value.rocks.filter((rock: rock | null) => rock).sort((a: rock | null, b: rock | null) => {
+        return (a ? a.num : 0) - (b ? b.num : 0)
       }))
+      let len = arr.length - 1
+      for (let i = 3; i >= 0; i--) {
+        for (let j = 0; j <= 3; j++) {
+          const element = arr[len--]
+          if (element) {
+            element.x = j
+            element.y = i
+          }
+          else {
+            break
+          }
+        }
+      }
     }
   }
 
