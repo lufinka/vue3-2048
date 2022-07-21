@@ -20,7 +20,8 @@ enum color {
   '#280b21' = 4096,
   '#281d04' = 8192,
 }
-
+// todo  1 tackle number show
+// todo  2 success show and next level
 type GameStatus = 'ready' | 'play' | 'won' | 'lost'
 type tackleStatuss = 'ready' | 'active' | 'disable'
 
