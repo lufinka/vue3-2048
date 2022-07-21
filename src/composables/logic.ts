@@ -39,14 +39,14 @@ export class GamePlay {
   state = ref() as Ref<GameState>
   highestScore = ref<number>(0) // 最高分
   levelCounts = levels.length // 关卡数
+  swapRocks = ref<Array<rock>>([]) // 道具对调的2个块
 
-  // todo 禁止消除障碍块
   tackle = {
     clear: (rock: rock | null) => this.clear(rock),
     handleRock: (rock: rock | null) => this.handleRock(rock),
     useTackle: (i: number) => this.useTackle(i),
     rearrange: (i: number) => this.rearrange(i),
-    swap: () => this.swap(),
+    swap: (rock: rock) => this.swap(rock),
   }
 
   constructor(
@@ -335,7 +335,21 @@ export class GamePlay {
     }
   }
 
-  swap(i: number, j: number) {
-
+  swap(rock: rock) {
+    rock && this.swapRocks.value.push({ ...rock })
+    if (this.swapRocks.value.length === 2) {
+      const rock1 = this.state.value.rocks.find(e => e && e.id === this.swapRocks.value[0].id)
+      const rock2 = this.state.value.rocks.find(e => e && e.id === this.swapRocks.value[1].id)
+      if (rock1 && rock2) {
+        rock1.x = this.swapRocks.value[1].x
+        rock1.y = this.swapRocks.value[1].y
+        this.mergeNumericBlockAddStyle(rock1)
+        rock2.x = this.swapRocks.value[0].x
+        rock2.y = this.swapRocks.value[0].y
+        this.mergeNumericBlockAddStyle(rock2)
+        this.swapRocks.value = []
+        this.state.value.tackleStatus[0] = 'disable'
+      }
+    }
   }
 }
