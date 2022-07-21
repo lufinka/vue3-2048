@@ -42,11 +42,11 @@ export class GamePlay {
   swapRocks = ref<Array<rock>>([]) // 道具对调的2个块
 
   tackle = {
-    clear: (rock: rock | null) => this.clear(rock),
+    clear: (rock: rock | null) => rock && this.clear(rock),
     handleRock: (rock: rock | null) => this.handleRock(rock),
     useTackle: (i: number) => this.useTackle(i),
     rearrange: (i: number) => this.rearrange(i),
-    swap: (rock: rock) => this.swap(rock),
+    swap: (rock: rock | null) => rock && this.swap(rock),
   }
 
   constructor(
@@ -278,7 +278,7 @@ export class GamePlay {
     return result !== undefined
   }
 
-  clear(rock: rock | null) {
+  clear(rock: rock) {
     const index = this.state.value.rocks.findIndex(e => e && e.id === rock?.id)
     const currentRock = this.state.value.rocks[index]
     const obstacleRock = currentRock && [666, 777].includes(currentRock.num)
@@ -293,10 +293,10 @@ export class GamePlay {
     const acriveIndex = this.state.value.tackleStatus.findIndex(e => e === 'active')
     switch (acriveIndex) {
       case 0:
-        this.swap(rock)
+        this.tackle.swap(rock)
         break
       case 1:
-        this.clear(rock)
+        this.tackle.clear(rock)
         break
     }
   }
@@ -319,16 +319,24 @@ export class GamePlay {
       const arr = emptyRocks.concat(this.state.value.rocks.filter((rock: rock | null) => rock).sort((a: rock | null, b: rock | null) => {
         return (a ? a.num : 0) - (b ? b.num : 0)
       }))
+
       let len = arr.length - 1
-      for (let i = 3; i >= 0; i--) {
+      for (let i = this.currentLevel.map[0].length; i >= 0; i--) {
         for (let j = 0; j <= 3; j++) {
-          const element = arr[len--]
-          if (element) {
-            element.x = j
-            element.y = i
+          const isDisableRock = this.currentLevel.map[i][j] === 0
+          const element = arr[len]
+          if (isDisableRock) {
+            continue
           }
           else {
-            break
+            if (element) {
+              element.x = j
+              element.y = i
+              len -= 1
+            }
+            else {
+              break
+            }
           }
         }
       }
@@ -336,7 +344,7 @@ export class GamePlay {
   }
 
   swap(rock: rock) {
-    rock && this.swapRocks.value.push({ ...rock })
+    this.swapRocks.value.push({ ...rock })
     if (this.swapRocks.value.length === 2) {
       const rock1 = this.state.value.rocks.find(e => e && e.id === this.swapRocks.value[0].id)
       const rock2 = this.state.value.rocks.find(e => e && e.id === this.swapRocks.value[1].id)
