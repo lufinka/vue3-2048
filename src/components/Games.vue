@@ -2,17 +2,11 @@
 import { GamePlay } from '~/composables/logic'
 import { levels } from '~/modules/levels'
 const directX = 30
-const play = new GamePlay(64, 'easy')
+const play = new GamePlay(8, 'easy')
 const now = $(useNow())
 const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
 useStorage('2048-state', play.state)
 useStorage('highest-score', play.highestScore)
-// 关卡（X）  当前分数  最高分
-// 游戏
-// 游戏
-// 游戏
-// 游戏
-// 对调位置  消除 重排
 onMounted(() => {
   document.addEventListener('keydown', (e) => {
     switch (e.key.toLocaleUpperCase()) {

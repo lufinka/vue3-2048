@@ -187,15 +187,12 @@ export class GamePlay {
       if (res.includes(true)) {
         if (this.isSuccess(this.state.value.rocks)) {
           this.state.value.status = 'won'
-          if (this.state.value.level === levels.length - 1) {
-            // Clearance reset
-            this.reset()
-          }
-          else {
-            delay(1000).then(() => {
+          delay(1000).then(() => {
+            if (this.state.value.level === levels.length - 1)
+              this.reset() // Clearance reset
+            else
               this.next()
-            })
-          }
+          })
         }
         this.add()
       }
