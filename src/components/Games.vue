@@ -2,7 +2,7 @@
 import { GamePlay } from '~/composables/logic'
 import { levels } from '~/modules/levels'
 const directX = 30
-const play = new GamePlay(2048, 'easy')
+const play = new GamePlay(64, 'easy')
 const now = $(useNow())
 const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
 useStorage('2048-state', play.state)

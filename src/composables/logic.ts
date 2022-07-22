@@ -20,17 +20,16 @@ enum color {
   '#280b21' = 4096,
   '#281d04' = 8192,
 }
-// todo  1 tackle number show
-// todo  2 success show and next level
+// todo  1 tackle number show && disable status
 type GameStatus = 'ready' | 'play' | 'won' | 'lost'
-type tackleStatuss = 'ready' | 'active' | 'disable'
+type tacklesStatus = 'ready' | 'active' | 'disable'
 
 interface GameState {
   rocks: Array<rock | null>
   score: number // 当前分数
   level: number // 关卡
   tackle: number[] // 道具
-  tackleStatus: Array<tackleStatuss> // 道具状态
+  tackleStatus: Array<tacklesStatus> // 道具状态
   status: GameStatus
   startMS?: number
   endMS?: number
@@ -188,8 +187,15 @@ export class GamePlay {
       if (res.includes(true)) {
         if (this.isSuccess(this.state.value.rocks)) {
           this.state.value.status = 'won'
-          alert('you won，next level!')
-          this.next()
+          if (this.state.value.level === levels.length - 1) {
+            // Clearance reset
+            this.reset()
+          }
+          else {
+            delay(1000).then(() => {
+              this.next()
+            })
+          }
         }
         this.add()
       }
