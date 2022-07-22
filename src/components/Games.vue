@@ -257,16 +257,28 @@ onMounted(() => {
         </button>
       </div>
       <div inline-flex>
-        <div p-x-10px @click="play.tackle.useTackle(0)">
-          <p text-2xl text-blue m-b--2px i-carbon-cicsplex />
+        <div p-x-10px position-relative @click="play.tackle.useTackle(0)">
+          <i
+            v-if="play.state.value.tackle[0]" position-absolute not-italic lh-12px w-12px text="sm white center" h-12px top--2px right-2px bg-red
+            border-rd-6px
+          >{{ play.state.value.tackle[0] }}</i>
+          <p :class="{ 'text-gray': play.state.value.tackle[0] === 0, 'text-blue': play.state.value.tackle[0] !== 0 }" text-2xl m-b--2px i-carbon-cicsplex />
           <span h-14px text-gray text-sm>对调</span>
         </div>
-        <div p-x-10px @click="play.tackle.useTackle(1)">
-          <p text-2xl text-blue m-b--2px i-carbon-scan-disabled />
+        <div p-x-10px position-relative @click="play.tackle.useTackle(1)">
+          <i
+            v-if="play.state.value.tackle[1]" position-absolute not-italic lh-12px w-12px text="sm white center" h-12px top--2px right-2px bg-red
+            border-rd-6px
+          >{{ play.state.value.tackle[1] }}</i>
+          <p :class="{ 'text-gray': play.state.value.tackle[1] === 0, 'text-blue': play.state.value.tackle[1] !== 0 }" text-2xl m-b--2px i-carbon-scan-disabled />
           <span h-14px text-gray text-sm>消除</span>
         </div>
-        <div pl-10px @click="() => { play.tackle.useTackle(2);play.tackle.rearrange(2) }">
-          <p text-2xl text-blue m-b--2px i-carbon-ibm-cloud-vpc-endpoints />
+        <div pl-10px position-relative @click="() => { play.tackle.useTackle(2);play.tackle.rearrange(2) }">
+          <i
+            v-if="play.state.value.tackle[2]" position-absolute not-italic lh-12px w-12px text="sm white center" h-12px top--2px right--4px bg-red
+            border-rd-6px
+          >{{ play.state.value.tackle[2] }}</i>
+          <p :class="{ 'text-gray': play.state.value.tackle[2] === 0, 'text-blue': play.state.value.tackle[2] !== 0 }" text-2xl m-b--2px i-carbon-ibm-cloud-vpc-endpoints />
           <span h-14px text-gray text-sm>重排</span>
         </div>
       </div>
