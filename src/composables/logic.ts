@@ -60,6 +60,10 @@ export class GamePlay {
     return levels[this.state.value.level]
   }
 
+  get swapRocksIds() {
+    return this.swapRocks.value.map((rock: rock) => rock.id)
+  }
+
   reset(
     targetScore = this.targetScore,
     difficulty = this.difficulty,
@@ -253,7 +257,7 @@ export class GamePlay {
       }
       else if (next === undefined) {
         const nextRock = handleDirect(direct, this.state.value.level).next(e)
-        if (this.currentLevel.map[nextRock.y][nextRock.x] === 0) {
+        if (this.currentLevel.map[nextRock.y] && this.currentLevel.map[nextRock.y][nextRock.x] === 0) {
           resolve(false)
         }
         else {
@@ -325,7 +329,7 @@ export class GamePlay {
       }))
 
       let len = arr.length - 1
-      for (let i = this.currentLevel.map[0].length; i >= 0; i--) {
+      for (let i = this.currentLevel.map.length - 1; i >= 0; i--) {
         for (let j = 0; j <= 3; j++) {
           const isDisableRock = this.currentLevel.map[i][j] === 0
           const element = arr[len]
@@ -360,6 +364,7 @@ export class GamePlay {
         rock2.y = this.swapRocks.value[0].y
         this.mergeNumericBlockAddStyle(rock2)
         this.swapRocks.value = []
+        this.state.value.tackle[0]--
         this.state.value.tackleStatus[0] = 'disable'
       }
     }

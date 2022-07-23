@@ -4,7 +4,7 @@ import { levels } from '~/modules/levels'
 const directX = 30
 const play = new GamePlay(2048, 'easy')
 const now = $(useNow())
-const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
+// const timerMS = $computed(() => Math.round(((play.state.value.endMS ?? +now) - (play.state.value.startMS ?? +now)) / 1000))
 useStorage('2048-state', play.state)
 useStorage('highest-score', play.highestScore)
 onMounted(() => {
@@ -174,6 +174,7 @@ onMounted(() => {
           <span
             :id="`r${e && e.id}`"
             inline-flex
+            position-relative
             w-full
             h-full
             important-text-center
@@ -185,6 +186,8 @@ onMounted(() => {
           >
             <span v-if="e?.num === 666 || e?.num === 777" i-carbon-warning-square-filled text-5xl />
             <span v-else>{{ e ? e.num : '' }}</span>
+            <span v-if="e && play.state.value.tackleStatus[1] === 'active'" position-absolute i-carbon-close text-gray text-5xl />
+            <span v-if="e && play.state.value.tackleStatus[0] === 'active' && !play.swapRocksIds.includes(e.id)" position-absolute i-carbon-arrows-horizontal text-gray text-5xl />
           </span>
         </span>
       </div>
