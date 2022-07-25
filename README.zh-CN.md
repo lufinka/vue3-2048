@@ -21,8 +21,6 @@
 
 <br>
 
-## 在线地址
-[DEMO](https://vue3-2048games.netlify.app/)
 ## 特性
 
 - ⚡️ [Vue 3](https://github.com/vuejs/core), [Vite 2](https://github.com/vitejs/vite), [pnpm](https://pnpm.io/), [ESBuild](https://github.com/evanw/esbuild) - 就是快！
