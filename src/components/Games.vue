@@ -165,7 +165,7 @@ onMounted(() => {
           m-2vw
           border-rd-2
           position-absolute
-          :class="{ 'text-5xl': e && e.num < 999, 'text-4xl': e && e.num > 999 }"
+          :class="{ 'text-5xl': e && e.num < 99, 'text-4xl': e && e.num > 99 && e.num < 999, 'text-3xl': e && e.num > 999 && e.num < 9999 }"
           font-500
           transition-property-transform
           :style="play.cssTransition(e)"
